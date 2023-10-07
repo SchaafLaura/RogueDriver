@@ -1,5 +1,7 @@
 class EditorScene extends Scene {
+
   void Update() {
+    HandleInput();
   }
   void Display() {
     background(0);

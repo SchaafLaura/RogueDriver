@@ -17,6 +17,12 @@ class SceneManager {
 
     activeScene = newScene;
   }
+  
+  public void HandleInput() {
+    if (activeScene == -1)
+      return;
+    scenes[activeScene].HandleInput();
+  }
 
   public void Update() {
     if (activeScene == -1)
