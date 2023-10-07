@@ -2,6 +2,12 @@ class Button {
   String label;
   Rectangle boundingBox;
   Runnable function;
+  
+  color normalColor = color(50, 50, 50);
+  color highlightColor = color(100, 100, 100);
+  
+  color normalTextColor = color(100, 100, 100);
+  color highlightTextColor = color(200, 200, 200);
 
   Button(String label, Rectangle boundingBox, Runnable function) {
     this.label = label;
@@ -12,9 +18,9 @@ class Button {
   void Display() {
     noStroke();
     boolean isMouseOver = boundingBox.IsPointInside(mouseX, mouseY);
-    fill(isMouseOver ? 100 : 50);
+    fill(isMouseOver ? highlightColor : normalColor);
     rect(boundingBox.x, boundingBox.y, boundingBox.w, boundingBox.h);
-    fill(isMouseOver ? 200 : 100);
+    fill(isMouseOver ? highlightTextColor : normalTextColor);
     textAlign(CENTER, CENTER);
     text(label, boundingBox.x + boundingBox.w/2.0, boundingBox.y+boundingBox.h/2.0);
   }
