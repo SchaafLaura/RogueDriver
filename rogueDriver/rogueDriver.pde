@@ -1,9 +1,5 @@
 SceneManager sceneManager;
-
 int MAINMENU_SCENE_INDEX = 0;
-
-
-
 void setup() {
   fullScreen();
   sceneManager = new SceneManager(new MainMenuScene());
