@@ -20,6 +20,7 @@ class MainMenuScene extends Scene {
       "Editor",
       new Rectangle(width/2-100, height/2 + 100, 200, 50),
       () -> {    // switch Scene to Editor
+      sceneManager.SwitchSceneTo(EDITOR_SCENE_INDEX, false, false);
     }
     );
 
