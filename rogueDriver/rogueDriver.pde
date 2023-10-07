@@ -8,4 +8,5 @@ void setup() {
 
 void draw() {
   sceneManager.Display();
+  sceneManager.Update();
 }
