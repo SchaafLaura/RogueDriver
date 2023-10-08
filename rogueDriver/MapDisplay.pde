@@ -1,5 +1,6 @@
 class MapDisplay {
-
+  ArrayList<PVector> tracks = new ArrayList<PVector>();
+  color trackColor = color(50, 50, 50, 100);
   color[] colors = new color[]{
     color(0, 0, 0),
     color(255, 255, 255),

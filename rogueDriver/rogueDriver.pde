@@ -14,3 +14,12 @@ void draw() {
   sceneManager.Display();
   sceneManager.Update();
 }
+
+
+void keyPressed() {
+  if (sceneManager.activeScene == EDITOR_SCENE_INDEX && key == 's')
+    selectOutput("Select a file to write to:", "SaveMap");
+
+  if (sceneManager.activeScene == EDITOR_SCENE_INDEX && key == 'l')
+    selectInput("Select a track to edit:", "LoadTrack");
+}

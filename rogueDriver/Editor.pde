@@ -39,15 +39,15 @@ class EditorScene extends Scene {
   }
 
   void HandleKeypress() {
-    if (key == '1')
+    if (key == '0')
       material = 0;
-    if (key == '2')
+    if (key == '1')
       material = 1;
-    if (key == '3')
+    if (key == '2')
       material = 2;
-    if (key == '4')
+    if (key == '3')
       material = 3;
-    if (key == '5')
+    if (key == '4')
       material = 4;
     if (key == '+')
       r++;
