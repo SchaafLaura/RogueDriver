@@ -2,12 +2,14 @@ class Button {
   String label;
   Rectangle boundingBox;
   Runnable function;
-  
+
   color normalColor = color(50, 50, 50);
   color highlightColor = color(100, 100, 100);
-  
+
   color normalTextColor = color(100, 100, 100);
   color highlightTextColor = color(200, 200, 200);
+
+  int frameLastClicked = -1;
 
   Button(String label, Rectangle boundingBox, Runnable function) {
     this.label = label;
@@ -26,11 +28,17 @@ class Button {
   }
 
   void OnClick() {
+    frameLastClicked = frameCount;
     function.run();
+    mouseButton = 0;
   }
 
   void TryClick() {
     if (!mousePressed)
+      return;
+    if (mouseButton != 37)
+      return;
+    if (frameCount <= frameLastClicked+1)
       return;
     if (!boundingBox.IsPointInside(mouseX, mouseY))
       return;

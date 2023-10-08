@@ -21,7 +21,7 @@ class Map {
     tiles = new int[NX][NY];
     for (int i = 0; i < NX; i++)
       for (int j = 0; j < NY; j++)
-        tiles[i][j] = (int)random(0, 4);
+        tiles[i][j] = wall;
   }
 
   void Display(float x, float y, float scale) {

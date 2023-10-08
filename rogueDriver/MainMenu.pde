@@ -12,6 +12,8 @@ class MainMenuScene extends Scene {
       "Select Level",
       new Rectangle(width/2-100, height/2, 200, 50),
       () -> {  // switch Scene to LevelSelect
+      noLoop();
+      selectInput("Select a track to edit:", "LoadTrack");
     }
     );
 
