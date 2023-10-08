@@ -53,6 +53,8 @@ class Car {
     if (map.tiles[newX][newY] == map.wall || map.tiles[newX][newY] == map.sand || map.tiles[newX][newY] == map.finish) {
       vx = 0;
       vy = 0;
+      vxBreak = 0;
+      vyBreak = 0;
     }
 
     // bonk. Don't go through walls
