@@ -14,19 +14,47 @@ class GameScene extends Scene {
     DisplayMap();
 
     DisplayNextMove();
+    DisplayBreakVelocity();
     DisplaySteps();
     DisplayPlayer();
+  }
+
+  void DisplayBreakVelocity() {
+    if (map == null || player == null)
+      return;
+    if (!player.handbrake)
+      return;
+    float scale = float(width)/map.NX;
+    int nextX = player.x + player.vxBreak + dvx;
+    int nextY = player.y + player.vyBreak + dvy;
+    
+
+    Line line = new Line(player.x, player.y, nextX, nextY);
+    
+    println(line.indices.size());
+    fill(190, 60, 60);
+    for (var pos : line.indices)
+      square(pos.x * scale, pos.y * scale, scale);
   }
 
   void DisplayNextMove() {
     if (map == null || player == null)
       return;
 
+
     float scale = float(width)/map.NX;
 
+    int nextX;
+    int nextY;
 
-    int nextX = player.x + player.vx + dvx;
-    int nextY = player.y + player.vy + dvy;
+    if (player.handbrake) {
+      nextX = player.x + player.vx;
+      nextY = player.y + player.vy;
+    } else {
+      nextX = player.x + player.vx + dvx;
+      nextY = player.y + player.vy + dvy;
+    }
+
 
     Line line = new Line(player.x, player.y, nextX, nextY);
     fill(190, 190, 0);
@@ -82,6 +110,9 @@ class GameScene extends Scene {
       dvy++;
     if (keyCode == UP && dvy > -1)
       dvy--;
+
+    if (keyCode == ENTER)
+      player.PullHandbrake();
 
     if (key == ' ' && !player.IsDriving()) {
       player.Steer(dvx, dvy);

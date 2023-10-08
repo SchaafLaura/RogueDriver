@@ -1,11 +1,34 @@
 class Car {
   int x, y;
   int vx, vy;
+  int vxBreak, vyBreak;
   int stepsTaken = 0;
+
+  boolean handbrake = false;
 
   ArrayList<PVector> nextMoves = new ArrayList<PVector>();
 
+  void PullHandbrake() {
+    if (!handbrake) {
+      vxBreak = vx;
+      vyBreak = vy;
+      println(vxBreak, vyBreak);
+    } else {
+      vx = vxBreak;
+      vy = vyBreak;
+    }
+    handbrake = !handbrake;
+  }
+
+
   void Steer(int dvx, int dvy) {
+    if (handbrake) {
+      vxBreak += dvx;
+      vyBreak += dvy;
+      dvx = 0;
+      dvy = 0;
+    }
+
     Line moves = new Line(x, y, x + vx + dvx, y + vy + dvy);
     nextMoves.addAll(moves.indices);
     vx += dvx;
