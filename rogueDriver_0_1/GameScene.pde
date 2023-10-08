@@ -6,6 +6,7 @@ class GameScene extends Scene {
   int prevVX, prevVY;
 
   ArrayList<PVector> tracks = new ArrayList<PVector>();
+  int steps = 0;
 
   Map map;
   void Update() {
@@ -33,8 +34,7 @@ class GameScene extends Scene {
     if (map != null)
       map.Display(0, 0, scale);
 
-    fill(255, 0, 255);
-    square(pX * scale, pY * scale, scale);
+
 
     fill(255, 255, 0);
     square((pX+vX) * scale, (pY+vY) * scale, scale);
@@ -42,38 +42,60 @@ class GameScene extends Scene {
     fill(50, 50, 50, 128);
     for (var t : tracks)
       square(t.x*scale, t.y*scale, scale);
+
+    fill(255, 0, 255);
+    square(pX * scale, pY * scale, scale);
+    textSize(30);
+    fill(255, 0, 255);
+    text(steps, 40, 40);
   }
 
   void Drive() {
-    println("driving");
+    steps++;
     Line line = new Line(pX, pY, pX + vX, pY + vY);
-    for (int i = 0; i < line.indices.size(); i++)
-      println(line.indices.get(i));
 
     for (int i = 0; i < line.indices.size(); i++) {
       int x = (int)line.indices.get(i).x;
       int y = (int)line.indices.get(i).y;
       pX = x;
       pY = y;
-      tracks.add(new PVector(x, y));
-      if (i == 0 || map.tiles[x][y] == map.road || map.tiles[x][y] == map.start)
+      
+      if (i == 0 || map.tiles[x][y] == map.road || map.tiles[x][y] == map.start){
+        tracks.add(new PVector(x, y));
         continue;
+      }
       vX = 0;
       vY = 0;
       prevVX = 0;
       prevVY = 0;
-      break;
+      
+      if (map.tiles[x][y] == map.finish)
+        break;
+
+      if (map.tiles[x][y] == map.wall) {
+        pX = (int)line.indices.get(i-1).x;
+        pY = (int)line.indices.get(i-1).y;
+        break;
+      }
+      tracks.add(new PVector(x, y));
     }
 
-    /*  pX += vX;
-     pY += vY;
-     */
     prevVX = vX;
     prevVY = vY;
   }
 
 
   void HandleInput() {
+    if (key == 'r') {
+      FindStart();
+      vX = 0;
+      vY = 0;
+      prevVX = 0;
+      prevVY = 0;
+      tracks = new ArrayList<PVector>();
+      steps = 0;
+    }
+
     if (keyCode == ENTER) {
       Drive();
     }
@@ -102,11 +124,8 @@ class GameScene extends Scene {
   }
   void Load() {
     map = ((EditorScene)sceneManager.scenes[EDITOR_SCENE_INDEX]).map;
-
-
     vX = 0;
     vY = 0;
-
     prevVX = vX;
     prevVY = vY;
   }

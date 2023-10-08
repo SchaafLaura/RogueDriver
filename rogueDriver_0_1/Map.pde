@@ -4,12 +4,14 @@ class Map {
 
   int wall = 0;
   int road = 1;
-  int start = 2;
-  int finish = 3;
+  int sand = 2;
+  int start = 3;
+  int finish = 4;
 
   color[] colors = new color[]{
     color(0, 0, 0),
     color(255, 255, 255),
+    color(200, 200, 40),
     color(0, 255, 0),
     color(255, 0, 0)
   };
