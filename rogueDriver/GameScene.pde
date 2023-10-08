@@ -45,13 +45,29 @@ class GameScene extends Scene {
   }
 
   void Drive() {
+    println("driving");
     Line line = new Line(pX, pY, pX + vX, pY + vY);
-    for (int i = 0; i < line.indices.size()-1; i++)
-      tracks.add(line.indices.get(i));
+    for (int i = 0; i < line.indices.size(); i++)
+      println(line.indices.get(i));
 
-    pX += vX;
-    pY += vY;
+    for (int i = 0; i < line.indices.size(); i++) {
+      int x = (int)line.indices.get(i).x;
+      int y = (int)line.indices.get(i).y;
+      pX = x;
+      pY = y;
+      tracks.add(new PVector(x, y));
+      if (i == 0 || map.tiles[x][y] == map.road || map.tiles[x][y] == map.start)
+        continue;
+      vX = 0;
+      vY = 0;
+      prevVX = 0;
+      prevVY = 0;
+      break;
+    }
 
+    /*  pX += vX;
+     pY += vY;
+     */
     prevVX = vX;
     prevVY = vY;
   }

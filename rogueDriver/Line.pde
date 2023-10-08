@@ -52,9 +52,23 @@ class Line {
           lowestDistanceIndex = i;
         }
       }
-      newindices.add(indices.get(lowestDistanceIndex));
+      if (newindices.size() == 0 || (indices.get(lowestDistanceIndex).x != newindices.get(newindices.size()-1).x || indices.get(lowestDistanceIndex).y != newindices.get(newindices.size()-1).y))
+        newindices.add(indices.get(lowestDistanceIndex));
       indices.remove(lowestDistanceIndex);
     }
+
+
+
+    /*if (!(newindices.get(0).x == x0_original && newindices.get(0).y == y0_original)) {
+     ArrayList<PVector> reversed = new ArrayList<PVector>();
+     for (int i = newindices.size() - 1; i >= 0; i--)
+     reversed.add(newindices.get(i));
+     indices = reversed;
+     return;
+     }*/
+
+
+
     indices = newindices;
   }
 
