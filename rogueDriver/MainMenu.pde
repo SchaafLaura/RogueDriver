@@ -14,6 +14,7 @@ class MainMenuScene extends Scene {
       () -> {  // switch Scene to LevelSelect
       noLoop();
       selectInput("Select a track to edit:", "LoadTrack");
+      sceneManager.SwitchSceneTo(GAME_SCENE_INDEX, false, true);
     }
     );
 

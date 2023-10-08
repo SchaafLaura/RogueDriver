@@ -1,9 +1,10 @@
 SceneManager sceneManager;
 int MAINMENU_SCENE_INDEX = 0;
 int EDITOR_SCENE_INDEX = 1;
+int GAME_SCENE_INDEX = 2;
 void setup() {
   size(1000, 1000);
-  sceneManager = new SceneManager(new MainMenuScene(), new EditorScene());
+  sceneManager = new SceneManager(new MainMenuScene(), new EditorScene(), new GameScene());
   sceneManager.SwitchSceneTo(MAINMENU_SCENE_INDEX, false, false);
 }
 
@@ -42,7 +43,7 @@ void LoadTrack(File fileSelected) {
 }
 
 int[][] ImgToData(PImage img) {
-  color[] colors = ((EditorScene)sceneManager.scenes[sceneManager.activeScene]).map.colors;
+  color[] colors = ((EditorScene)sceneManager.scenes[EDITOR_SCENE_INDEX]).map.colors;
   HashMap<Integer, Integer> colorsToIndices = new HashMap<Integer, Integer>();
   for (int i = 0; i < colors.length; i++) {
     colorsToIndices.put(colors[i], i);

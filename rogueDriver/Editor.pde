@@ -36,7 +36,6 @@ class EditorScene extends Scene {
   }
 
   void HandleKeyboard() {
-    println("nya");
     if (!keyPressed)
       return;
 
