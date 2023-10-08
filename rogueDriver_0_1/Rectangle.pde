@@ -23,7 +23,7 @@ class Rectangle {
   }
 
   void DebugDisplay() {
-    var currentColorMode = rogueDriver.this.g.colorMode;
+    var currentColorMode = rogueDriver_0_1.this.g.colorMode;
     colorMode(RGB);
     noFill();
     stroke(255, 0, 255);
