@@ -49,6 +49,8 @@ class EditorScene extends Scene {
       material = 3;
     if (key == '4')
       material = 4;
+    if (key == '5')
+      material = 5;
     if (key == '+')
       r++;
     if (key == '-')

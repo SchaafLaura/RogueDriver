@@ -10,7 +10,7 @@ void LoadTrack(File fileSelected) {
   if (sceneManager.activeScene == EDITOR_SCENE_INDEX)
     ((EditorScene)sceneManager.scenes[EDITOR_SCENE_INDEX]).map.tiles = ImgToData(img);
   if (sceneManager.activeScene == GAME_SCENE_INDEX)
-    ((GameScene)sceneManager.scenes[GAME_SCENE_INDEX]).map = new Map(ImgToData(img));
+    ((GameScene)sceneManager.scenes[GAME_SCENE_INDEX]).LoadMap(new Map(ImgToData(img)));
   loop();
 }
 

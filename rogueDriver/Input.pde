@@ -9,6 +9,8 @@ void keyPressed() {
 
   if (sceneManager.activeScene == EDITOR_SCENE_INDEX && key == 'l')
     selectInput("Select a track to edit:", "LoadTrack");
+
+  sceneManager.HandleInput();
 }
 
 void keyReleased() {
