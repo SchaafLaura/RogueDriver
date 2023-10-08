@@ -55,6 +55,9 @@ class EditorScene extends Scene {
       r--;
     if (r < 0)
       r = 0;
+
+    if (escDown)
+      sceneManager.SwitchSceneTo(MAINMENU_SCENE_INDEX, false, false);
   }
 
   void Update() {
