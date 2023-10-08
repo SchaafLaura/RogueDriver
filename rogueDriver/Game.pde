@@ -59,6 +59,11 @@ class GameScene extends Scene {
   }
 
   void HandleInput() {
+    if (mousePressed) {
+      return;
+    }
+
+
     if (escDown) {
       sceneManager.SwitchSceneTo(MAINMENU_SCENE_INDEX, false, false);
       return;

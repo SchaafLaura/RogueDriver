@@ -48,7 +48,7 @@ class Car {
     }
     nextMoves.remove(0);
 
-    if (map.tiles[x][y] == map.ice)
+    if (nextMoves.size() == 0 && map.tiles[x][y] == map.ice && (vx != 0 || vy != 0))
       Steer(0, 0);
   }
 }

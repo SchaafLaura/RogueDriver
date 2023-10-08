@@ -14,4 +14,6 @@ void setup() {
 void draw() {
   sceneManager.Display();
   sceneManager.Update();
+  if (mousePressed)
+    sceneManager.HandleInput();
 }
