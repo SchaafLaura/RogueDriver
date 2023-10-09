@@ -1,8 +1,9 @@
 class GameScene extends Scene {
   Map map;
   MapDisplay mapDisplay = new MapDisplay();
-  Car player;
+  //Car player;
 
+  Player player;
   int dvx, dvy;
 
   void Update() {
@@ -14,27 +15,29 @@ class GameScene extends Scene {
     DisplayMap();
 
     DisplayNextMove();
-    DisplayBreakVelocity();
+    //DisplayBreakVelocity();
+
+    fill(255, 0, 255);
+    textSize(30);
+    textAlign(LEFT);
     DisplaySteps();
+    DisplayVelocity();
+    DisplayGear();
+
+
     DisplayPlayer();
   }
 
-  void DisplayBreakVelocity() {
-    if (map == null || player == null)
-      return;
-    if (!player.handbrake)
-      return;
-    float scale = float(width)/map.NX;
-    int nextX = player.x + player.vxBreak + dvx;
-    int nextY = player.y + player.vyBreak + dvy;
-    
+  void DisplaySteps() {
+    text("steps: " + player.stepsTaken, 30, 30);
+  }
 
-    Line line = new Line(player.x, player.y, nextX, nextY);
-    
-    println(line.indices.size());
-    fill(190, 60, 60);
-    for (var pos : line.indices)
-      square(pos.x * scale, pos.y * scale, scale);
+  void DisplayVelocity() {
+    text("v: " + player.Velocity(), 30, 70);
+  }
+
+  void DisplayGear() {
+    text("gear: " + player.gear, 30, 110);
   }
 
   void DisplayNextMove() {
@@ -62,15 +65,6 @@ class GameScene extends Scene {
       square(pos.x * scale, pos.y * scale, scale);
   }
 
-  void DisplaySteps() {
-    if (player == null)
-      return;
-
-    textSize(30);
-    fill(255, 0, 255);
-    text(player.stepsTaken, 30, 30);
-  }
-
   void DisplayPlayer() {
     if (player == null)
       return;
@@ -87,20 +81,46 @@ class GameScene extends Scene {
   }
 
   void HandleInput() {
-    if (mousePressed) {
+    
+    TryGoToMainMenu();
+    TryReset();
+    
+    if (mousePressed)
       return;
-    }
 
-
-    if (escDown) {
-      sceneManager.SwitchSceneTo(MAINMENU_SCENE_INDEX, false, false);
+    if (player.IsDriving())
       return;
-    }
 
-    if (key == 'r') {
-      ResetPlayerOnCurrentMap();
-      mapDisplay.tracks = new ArrayList<PVector>();
+    TrySteer();
+
+    Move move = null;
+
+    if (key == '#')
+      move = new SwitchEngine();
+
+    if (key == '-')
+      move = new GearDown();
+
+    if (key == '+')
+      move = new GearUp();
+
+    if (keyCode == ENTER)
+      move = new SwitchBrake();
+
+    if (key == ' ')
+      move = new Steer(dvx, dvy);
+
+
+    if (move != null) {
+      player.DoMove(move);
+      dvx = 0;
+      dvy = 0;
     }
+  }
+
+  void TrySteer() {
+    int prevDVX = dvx;
+    int prevDVY = dvy;
 
     if (keyCode == RIGHT && dvx < 1)
       dvx++;
@@ -111,13 +131,23 @@ class GameScene extends Scene {
     if (keyCode == UP && dvy > -1)
       dvy--;
 
-    if (keyCode == ENTER)
-      player.PullHandbrake();
+    if (!player.IsValidVelocity(player.vx + dvx, player.vy + dvy)) {
+      dvx = prevDVX;
+      dvy = prevDVY;
+    }
+  }
 
-    if (key == ' ' && !player.IsDriving()) {
-      player.Steer(dvx, dvy);
-      dvx = 0;
-      dvy = 0;
+  void TryReset() {
+    if (key == 'r') {
+      ResetPlayerOnCurrentMap();
+      mapDisplay.tracks = new ArrayList<PVector>();
+    }
+  }
+
+  void TryGoToMainMenu() {
+    if (escDown) {
+      sceneManager.SwitchSceneTo(MAINMENU_SCENE_INDEX, false, false);
+      return;
     }
   }
 
@@ -129,12 +159,13 @@ class GameScene extends Scene {
   void ResetPlayerOnCurrentMap() {
     var start = map.GetStart();
 
-    player = new Car();
+    player = new Player();
     player.x = start[0];
     player.y = start[1];
     player.vx = 0;
     player.vy = 0;
     player.stepsTaken = 0;
+    player.nextPositions = new ArrayList<PVector>();
   }
 
   void Load() {
