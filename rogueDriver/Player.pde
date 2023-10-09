@@ -5,9 +5,19 @@ class Player {
   int x, y;                       // position: 0 .. mapSize
   int vx, vy;                     // abs(velocity): 2*gear-1 .. 2*gear+1
 
-  void makeMove(Move move) {
+  void Update() {
+    x += vx;
+    y += vy;
+  }
+
+  void UndoMove(Move move) {
+    move.Undo(this);
+  }
+
+  void DoMove(Move move) {
     move.SavePlayerState(this.Copy());
     move.Do(this);
+    Update();
   }
 
   void Restore(Player p) {
@@ -35,7 +45,56 @@ class Player {
   }
 }
 
+class Steer extends Move {
+  int dx, dy;
+  Steer(int dx, int dy) {
+    this.dx = dx;
+    this.dy = dy;
+  }
+
+  char Hash() {
+    int num = (dx+1) + (dy+1)*3;  // unique 1D number from 2D (dx,dy)
+    char c = (char) (num+48);     // converts integers from 0 to 9 to characters from '0' to '9'
+    return c;
+  }
+
+  void Do(Player p) {
+    p.vx += dx;
+    p.vy += dy;
+  }
+}
+
+class GearDown extends Move {
+  char Hash() {
+    return '-';
+  }
+  void Do(Player p) {
+    p.gear--;
+  }
+}
+
+class GearUp extends Move {
+  char Hash() {
+    return '+';
+  }
+  void Do(Player p) {
+    p.gear += 1;
+  }
+}
+
+class SwitchEngine extends Move {
+  char Hash() {
+    return 'e';
+  }
+  void Do(Player p) {
+    p.engineRunning = !p.engineRunning;
+  }
+}
+
 class SwitchBreak extends Move {
+  char Hash() {
+    return 'b';
+  }
   void Do(Player p) {
     p.handbrake = !p.handbrake;
   }
@@ -45,6 +104,7 @@ class SwitchBreak extends Move {
 abstract class Move {
   Player before;
   abstract void Do(Player p);
+  abstract char Hash();
   void Undo(Player p) {
     p.Restore(before);
   }
