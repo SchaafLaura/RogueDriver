@@ -2,6 +2,7 @@ SceneManager sceneManager;
 int MAINMENU_SCENE_INDEX = 0;
 int EDITOR_SCENE_INDEX = 1;
 int GAME_SCENE_INDEX = 2;
+
 void setup() {
   size(1000, 1000);
   sceneManager = new SceneManager(new MainMenuScene(), new EditorScene(), new GameScene());
