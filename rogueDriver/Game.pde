@@ -15,16 +15,16 @@ class GameScene extends Scene {
     DisplayMap();
 
     DisplayNextMove();
-    //DisplayBreakVelocity();
 
+    if (player == null)
+      return;
     fill(255, 0, 255);
     textSize(30);
     textAlign(LEFT);
     DisplaySteps();
     DisplayVelocity();
     DisplayGear();
-
-
+    DisplayEngine();
     DisplayPlayer();
   }
 
@@ -38,6 +38,10 @@ class GameScene extends Scene {
 
   void DisplayGear() {
     text("gear: " + player.gear, 30, 110);
+  }
+
+  void DisplayEngine() {
+    text("engine: " + player.engineRunning, 30, 150);
   }
 
   void DisplayNextMove() {
@@ -60,7 +64,14 @@ class GameScene extends Scene {
 
 
     Line line = new Line(player.x, player.y, nextX, nextY);
-    fill(190, 190, 0);
+
+    if (player.IsValidVelocity(player.vx + dvx, player.vy + dvy))
+      fill(190, 190, 0);
+    else
+      fill(200, 80, 0);
+
+
+
     for (var pos : line.indices)
       square(pos.x * scale, pos.y * scale, scale);
   }
@@ -81,10 +92,10 @@ class GameScene extends Scene {
   }
 
   void HandleInput() {
-    
+
     TryGoToMainMenu();
     TryReset();
-    
+
     if (mousePressed)
       return;
 
@@ -122,6 +133,8 @@ class GameScene extends Scene {
     int prevDVX = dvx;
     int prevDVY = dvy;
 
+    int prevVelocity = max(abs(player.vx), abs(player.vy));
+
     if (keyCode == RIGHT && dvx < 1)
       dvx++;
     if (keyCode == LEFT && dvx > -1)
@@ -131,7 +144,8 @@ class GameScene extends Scene {
     if (keyCode == UP && dvy > -1)
       dvy--;
 
-    if (!player.IsValidVelocity(player.vx + dvx, player.vy + dvy)) {
+    int newVelocity = max(abs(player.vx + dvx), abs(player.vy + dvy));
+    if (!player.engineRunning && newVelocity > prevVelocity) {
       dvx = prevDVX;
       dvy = prevDVY;
     }

@@ -11,10 +11,45 @@ class Player {
   void Update() {
     if (nextPositions.size() == 0)
       return;
-    x = (int) nextPositions.get(0).x;
-    y = (int) nextPositions.get(0).y;
-    nextPositions.remove(0);
+
+    GoToNextPosition();
   }
+
+  void GoToNextPosition() {
+    var map = ((GameScene)sceneManager.scenes[GAME_SCENE_INDEX]).map;
+    int newX = (int) nextPositions.get(0).x;
+    int newY = (int) nextPositions.get(0).y;
+
+    if (map.tiles[x][y] == map.finish) {
+      vx = 0;
+      vy = 0;
+      engineRunning = false;
+      handbrake = true;
+      nextPositions = new ArrayList<PVector>();
+      return;
+    }
+
+    if (map.tiles[newX][newY] == map.wall) {
+      engineRunning = false;
+      vx = 0;
+      vy = 0;
+      nextPositions = new ArrayList<PVector>();
+      return;
+    }
+
+    if (map.tiles[newX][newY] == map.sand) {
+      vx = 0;
+      vy = 0;
+    }
+
+    x = newX;
+    y = newY;
+    nextPositions.remove(0);
+
+    if (nextPositions.size() == 0 && map.tiles[x][y] == map.ice && (vx != 0 || vy != 0))
+      Drive();
+  }
+
 
   void Drive() {
     Line moves = new Line(x, y, x + vx, y + vy);
@@ -36,9 +71,16 @@ class Player {
     return nextPositions.size() > 0;
   }
 
+  void UpdateStats() {
+    if (IsValidVelocity(vx, vy))
+      return;
+    engineRunning = false;
+  }
+
   void DoMove(Move move) {
     move.SavePlayerState(this.Copy());
     move.Do(this);
+    UpdateStats();
     Drive();
     stepsTaken++;
   }
