@@ -6,7 +6,13 @@ class GameScene extends Scene {
   Player player;
   int dvx, dvy;
 
+  boolean win = false;
+
   void Update() {
+    if (map.tiles[player.x][player.y] == map.finish) {
+      win = true;
+      sceneManager.SwitchSceneTo(HIGHSCORE_SCENE_INDEX, false, false);
+    }
     player.Update();
   }
 
@@ -18,7 +24,7 @@ class GameScene extends Scene {
 
     if (player == null)
       return;
-    fill(255, 0, 255);
+
     textSize(30);
     textAlign(LEFT);
     DisplaySteps();
@@ -29,19 +35,27 @@ class GameScene extends Scene {
   }
 
   void DisplaySteps() {
+    fill(255, 0, 255);
     text("steps: " + player.stepsTaken, 30, 30);
   }
 
   void DisplayVelocity() {
+    fill(255, 255, 255);
     text("v: " + player.Velocity(), 30, 70);
   }
 
   void DisplayGear() {
-    text("gear: " + player.gear, 30, 110);
+    color col = player.IsValidVelocity(player.vx, player.vy) ? color(255, 255, 255) : color(255, 0, 0);
+    fill(col);
+    String plusMinus = player.Velocity() == 2 * player.gear - 1 ? "-" : player.Velocity() == 2 * player.gear + 1 ? "+" : "";
+    text("gear: " + player.gear + plusMinus, 30, 110);
   }
 
   void DisplayEngine() {
-    text("engine: " + player.engineRunning, 30, 150);
+    String onOff = player.engineRunning ? "On" : "Off";
+    color col = player.engineRunning ? color(0, 255, 0) : color (255, 0, 0);
+    fill(col);
+    text("engine: " + onOff, 30, 150);
   }
 
   void DisplayNextMove() {
@@ -109,10 +123,10 @@ class GameScene extends Scene {
     if (key == '#')
       move = new SwitchEngine();
 
-    if (key == '-')
+    if (key == '-' && player.gear > 0)
       move = new GearDown();
 
-    if (key == '+')
+    if (key == '+' && player.gear < 6)
       move = new GearUp();
 
     if (keyCode == ENTER)
@@ -155,6 +169,7 @@ class GameScene extends Scene {
     if (key == 'r') {
       ResetPlayerOnCurrentMap();
       mapDisplay.tracks = new ArrayList<PVector>();
+      win = false;
     }
   }
 

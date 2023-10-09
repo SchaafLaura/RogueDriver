@@ -7,10 +7,16 @@ void LoadTrack(File fileSelected) {
     println("User selected " + fileSelected.getAbsolutePath());
   }
   PImage img = loadImage(fileSelected.getAbsolutePath());
-  if (sceneManager.activeScene == EDITOR_SCENE_INDEX)
+
+  if (sceneManager.activeScene == EDITOR_SCENE_INDEX) {
     ((EditorScene)sceneManager.scenes[EDITOR_SCENE_INDEX]).map.tiles = ImgToData(img);
-  if (sceneManager.activeScene == GAME_SCENE_INDEX)
+    ((EditorScene)sceneManager.scenes[EDITOR_SCENE_INDEX]).map.absolutePath = fileSelected.getAbsolutePath();
+  }
+  if (sceneManager.activeScene == GAME_SCENE_INDEX) {
     ((GameScene)sceneManager.scenes[GAME_SCENE_INDEX]).LoadMap(new Map(ImgToData(img)));
+    ((GameScene)sceneManager.scenes[GAME_SCENE_INDEX]).map.absolutePath = fileSelected.getAbsolutePath();
+  }
+
   loop();
 }
 

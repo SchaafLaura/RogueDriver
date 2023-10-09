@@ -24,6 +24,7 @@ class Button {
     rect(boundingBox.x, boundingBox.y, boundingBox.w, boundingBox.h);
     fill(isMouseOver ? highlightTextColor : normalTextColor);
     textAlign(CENTER, CENTER);
+    textSize(30);
     text(label, boundingBox.x + boundingBox.w/2.0, boundingBox.y+boundingBox.h/2.0);
   }
 

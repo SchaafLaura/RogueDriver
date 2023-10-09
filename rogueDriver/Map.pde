@@ -7,6 +7,8 @@ class Map {
   int ice = 3;
   int start = 4;
   int finish = 5;
+  
+  String absolutePath;
 
   Map(int NX, int NY) {
     this.NX = NX;

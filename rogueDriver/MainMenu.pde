@@ -3,6 +3,8 @@ class MainMenuScene extends Scene {
   Button editor;
   Button quit;
 
+  PImage bg = loadImage("bg.png");
+
   Button[] buttons;
 
   MainMenuScene() {
@@ -45,7 +47,7 @@ class MainMenuScene extends Scene {
       b.TryClick();
   }
   void Display() {
-    background(0);
+    image(bg, 0, 0);
     for (var b : buttons)
       b.Display();
   }
