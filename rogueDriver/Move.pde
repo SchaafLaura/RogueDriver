@@ -83,7 +83,6 @@ Move MoveFromHash(char hash) {
     return new GearDown();
     // TODO: update with more commands when needed
   }
-
   // steer
   int r = (int) (hash - 48);
   int dx = (r % 3) - 1;

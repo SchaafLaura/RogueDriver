@@ -1,3 +1,17 @@
+class Ghost extends Player {
+  String moveHashes;
+  Ghost(String moveHashes) {
+    this.moveHashes =new StringBuilder(moveHashes).reverse().toString();
+  }
+  void NextStep() {
+    if (moveHashes == "")
+      return;
+    char nextStepHash = moveHashes.charAt(moveHashes.length() - 1);
+    moveHashes = moveHashes.substring(0, moveHashes.length() - 1);
+    DoMove(MoveFromHash(nextStepHash));
+  }
+}
+
 class Player {
   boolean engineRunning = false;  // engine state
   boolean handbrake = false;      // brake engaged?

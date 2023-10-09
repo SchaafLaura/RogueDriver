@@ -4,6 +4,7 @@ class GameScene extends Scene {
   //Car player;
 
   Player player;
+  Ghost ghost;
   int dvx, dvy;
 
   boolean win = false;
@@ -14,6 +15,7 @@ class GameScene extends Scene {
       sceneManager.SwitchSceneTo(HIGHSCORE_SCENE_INDEX, false, false);
     }
     player.Update();
+    ghost.Update();
   }
 
   void Display() {
@@ -94,6 +96,11 @@ class GameScene extends Scene {
     if (player == null)
       return;
     float scale = float(width)/map.NX;
+
+
+    fill(0, 0, 255);
+    square(ghost.x * scale, ghost.y * scale, scale);
+
     fill(255, 0, 255);
     square(player.x * scale, player.y * scale, scale);
   }
@@ -138,6 +145,7 @@ class GameScene extends Scene {
 
     if (move != null) {
       player.DoMove(move);
+      ghost.NextStep();
       dvx = 0;
       dvy = 0;
     }
@@ -189,12 +197,21 @@ class GameScene extends Scene {
     var start = map.GetStart();
 
     player = new Player();
+
     player.x = start[0];
     player.y = start[1];
     player.vx = 0;
     player.vy = 0;
     player.stepsTaken = 0;
     player.nextPositions = new ArrayList<PVector>();
+
+    ghost = new Ghost("e013553438e+21+1588875+7-66663+73331-002011+021221");
+    ghost.x = start[0];
+    ghost.y = start[1];
+    ghost.vx = 0;
+    ghost.vy = 0;
+    ghost.stepsTaken = 0;
+    ghost.nextPositions = new ArrayList<PVector>();
   }
 
   void Load() {

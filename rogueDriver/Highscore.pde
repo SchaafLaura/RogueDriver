@@ -101,6 +101,7 @@ class HighscoreScene extends Scene {
       score = -1;
       highscores = null;
       sceneManager.SwitchSceneTo(MAINMENU_SCENE_INDEX, false, false);
+      written = false;
       return;
     }
   }
