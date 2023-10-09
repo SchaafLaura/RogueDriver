@@ -58,6 +58,9 @@ class EditorScene extends Scene {
     if (r < 0)
       r = 0;
 
+    if (key == 'u')
+      UploadMap(map);
+
     if (escDown)
       sceneManager.SwitchSceneTo(MAINMENU_SCENE_INDEX, false, false);
   }

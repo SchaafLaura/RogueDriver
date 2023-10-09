@@ -191,6 +191,7 @@ class GameScene extends Scene {
   void LoadMap(Map toLoad) {
     map = toLoad;
     ResetPlayerOnCurrentMap();
+    println(map.Hash());
   }
 
   void ResetPlayerOnCurrentMap() {
@@ -205,7 +206,7 @@ class GameScene extends Scene {
     player.stepsTaken = 0;
     player.nextPositions = new ArrayList<PVector>();
 
-    ghost = new Ghost("e013553438e+21+1588875+7-66663+73331-002011+021221");
+    ghost = new Ghost("e1+004+115588888+77-66633+6330301110221122---e514");
     ghost.x = start[0];
     ghost.y = start[1];
     ghost.vx = 0;

@@ -21,7 +21,7 @@ void setup() {
   sceneManager = new SceneManager(new MainMenuScene(), new EditorScene(), new GameScene(), new HighscoreScene());
   sceneManager.SwitchSceneTo(MAINMENU_SCENE_INDEX, false, false);
   
-  TestConnection();
+  //TestConnection();
 }
 
 void draw() {
