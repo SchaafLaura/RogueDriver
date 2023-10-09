@@ -145,7 +145,7 @@ class GameScene extends Scene {
 
     if (move != null) {
       player.DoMove(move);
-      ghost.NextStep();
+      //ghost.NextStep();
       dvx = 0;
       dvy = 0;
     }
