@@ -1,33 +1,33 @@
 class HighscoreScene extends Scene {
   String name = "";
   int score = -1;
+  String replay;
+  boolean written = false;
 
-  IntDict highscoreDict;
+  ArrayList<HighscoreEntry> highscores;
 
   void Update() {
     if (score > 0)
       return;
 
-    int s = ((GameScene)sceneManager.scenes[GAME_SCENE_INDEX]).player.stepsTaken;
-    score = s;
+    score = ((GameScene)sceneManager.scenes[GAME_SCENE_INDEX]).player.stepsTaken;
+    replay = ((GameScene)sceneManager.scenes[GAME_SCENE_INDEX]).player.history;
   }
   void Display() {
     background(0);
-    if (highscoreDict != null)
+    if (highscores != null)
       DisplayHighScores();
     else
       DisplayNameInput();
   }
   void DisplayHighScores() {
-    var names = highscoreDict.keyArray();
-    var scores = highscoreDict.valueArray();
-
     textAlign(CENTER, CENTER);
-    for (int i = 0; i < names.length; i++) {
-      text(names[i] + " - " + scores[i], width/2, (i+1) * 50);
+    int i = 0;
+    for (var h : highscores) {
+      text(h.score + " - " + h.name, width/2, (i+1) * 50);
+      i++;
     }
   }
-
 
   void DisplayNameInput() {
     background(0);
@@ -38,8 +38,6 @@ class HighscoreScene extends Scene {
     text("Sign your name:", width/2, height/2 + 30);
     text(name, width/2, height/2 + 60);
   }
-
-
 
   void WriteHighScoreToFile() {
     String path = ((GameScene)sceneManager.scenes[GAME_SCENE_INDEX]).map.absolutePath;
@@ -56,38 +54,38 @@ class HighscoreScene extends Scene {
       println("found");
     }
     SetHighScoreTableFromStrings(lines);
-
     WriteTableToFile(path);
   }
 
   void WriteTableToFile(String path) {
     PrintWriter pw = createWriter(path);
-    var names = highscoreDict.keyArray();
-    var scores = highscoreDict.valueArray();
+    for (var h : highscores)
+      pw.println(h.name + " " + h.replay);
 
-    for (int i = 0; i < names.length; i++) {
-      pw.println(names[i] + " " + scores[i]);
-    }
     pw.flush();
     pw.close();
   }
 
   void SetHighScoreTableFromStrings(String[] strings) {
-    highscoreDict = new IntDict();
+    highscores = new ArrayList<HighscoreEntry>();
+
     if (strings != null) {
       for (var s : strings) {
         var split = s.split(" ");
-        highscoreDict.set(split[0], Integer.parseInt(split[1]));
+        highscores.add(new HighscoreEntry(split[0], split[1]));
       }
     }
-    highscoreDict.set(name, score);
-    highscoreDict.sortValues();
+    highscores.add(new HighscoreEntry(name, replay));
+
+    Collections.sort(highscores);
+    Collections.reverse(highscores);
   }
 
 
   void HandleInput() {
-    if (keyCode == ENTER && name.length() > 0) {
+    if (keyCode == ENTER && name.length() > 0 && !written) {
       WriteHighScoreToFile();
+      written = true;
     }
 
     if ((keyCode == BACKSPACE && name.length() == 1) || (keyCode == BACKSPACE && name.length() == 0)) {
@@ -98,10 +96,10 @@ class HighscoreScene extends Scene {
       name += (char)key;
     }
 
-    if (escDown && name != "" && highscoreDict != null) {
+    if (escDown && name != "" && highscores != null) {
       name = "";
       score = -1;
-      highscoreDict = null;
+      highscores = null;
       sceneManager.SwitchSceneTo(MAINMENU_SCENE_INDEX, false, false);
       return;
     }
@@ -109,5 +107,23 @@ class HighscoreScene extends Scene {
   void Load() {
   }
   void Unload() {
+  }
+}
+
+class HighscoreEntry implements Comparable {
+  String name;
+  String replay;
+  int score;
+
+  int compareTo(Object other) {
+    if (!(other instanceof HighscoreEntry))
+      return 0;
+    return ((HighscoreEntry)other).score > score ? 1 : -1;
+  }
+
+  HighscoreEntry(String name, String replay) {
+    this.name = name;
+    this.replay = replay;
+    score = replay.length();
   }
 }

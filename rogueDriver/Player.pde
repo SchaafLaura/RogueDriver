@@ -7,6 +7,7 @@ class Player {
   int stepsTaken = 0;             // number of moves made
 
   ArrayList<PVector> nextPositions = new ArrayList<PVector>();
+  String history = "";
 
   void Update() {
     if (nextPositions.size() == 0)
@@ -78,6 +79,7 @@ class Player {
   }
 
   void DoMove(Move move) {
+    history += move.Hash();
     move.SavePlayerState(this.Copy());
     move.Do(this);
     UpdateStats();
@@ -88,6 +90,7 @@ class Player {
   void UndoMove(Move move) {
     move.Undo(this);
     stepsTaken--;
+    history = history.substring(0, history.length() - 1);
   }
 
   void Restore(Player p) {
