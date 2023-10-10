@@ -145,7 +145,7 @@ class GameScene extends Scene {
 
     if (move != null) {
       player.DoMove(move);
-      //ghost.NextStep();
+      ghost.NextStep();
       dvx = 0;
       dvy = 0;
     }
@@ -192,6 +192,27 @@ class GameScene extends Scene {
     map = toLoad;
     ResetPlayerOnCurrentMap();
     println(map.Hash());
+  }
+
+  void SetupMatchAgainst(String ghostReplay) {
+    var start = map.GetStart();
+
+    player = new Player();
+
+    player.x = start[0];
+    player.y = start[1];
+    player.vx = 0;
+    player.vy = 0;
+    player.stepsTaken = 0;
+    player.nextPositions = new ArrayList<PVector>();
+
+    ghost = new Ghost(ghostReplay);
+    ghost.x = start[0];
+    ghost.y = start[1];
+    ghost.vx = 0;
+    ghost.vy = 0;
+    ghost.stepsTaken = 0;
+    ghost.nextPositions = new ArrayList<PVector>();
   }
 
   void ResetPlayerOnCurrentMap() {

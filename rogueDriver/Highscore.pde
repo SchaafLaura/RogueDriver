@@ -3,28 +3,43 @@ class HighscoreScene extends Scene {
   int score = -1;
   String replay;
   boolean written = false;
-
   ArrayList<HighscoreEntry> highscores;
+  ArrayList<Button> driveAgainstButtons;
 
   void Update() {
-    if (score > 0)
-      return;
+    if (driveAgainstButtons != null)
+      for (var b : driveAgainstButtons)
+        b.TryClick();
 
+    if (score != -1)
+      return;
+    else
+      GetPlayerHighScoreAndReplay();
+  }
+
+  void GetPlayerHighScoreAndReplay() {
     score = ((GameScene)sceneManager.scenes[GAME_SCENE_INDEX]).player.stepsTaken;
     replay = ((GameScene)sceneManager.scenes[GAME_SCENE_INDEX]).player.history;
   }
+
   void Display() {
+
     background(0);
-    if (highscores != null)
-      DisplayHighScores();
-    else
+    if (highscores == null)
       DisplayNameInput();
+    else
+      DisplayHighScores();
   }
   void DisplayHighScores() {
-    textAlign(CENTER, CENTER);
+
+
+
     int i = 0;
     for (var h : highscores) {
-      text(h.score + " - " + h.name, width/2, (i+1) * 50);
+      driveAgainstButtons.get(i).Display();
+      textAlign(LEFT, CENTER);
+      text(h.score + " - " + h.name, width/3, (i+1) * 50);
+
       i++;
     }
   }
@@ -35,56 +50,39 @@ class HighscoreScene extends Scene {
     fill(0, 255, 0);
     textAlign(CENTER, CENTER);
     text("SCORE: " + score, width/2, height/2 - 30);
-    text("Sign your name:", width/2, height/2 + 30);
-    text(name, width/2, height/2 + 60);
+
+    textAlign(LEFT, CENTER);
+    text("Sign your name:", width/2 - 100, height/2 + 30);
+
+    boolean cursorActive = frameCount % 20 < 10;
+    String cursor = cursorActive ? "|" : "";
+    text(name+cursor, width/2 - 100, height/2 + 90);
   }
 
-  void WriteHighScoreToFile() {
-    String path = ((GameScene)sceneManager.scenes[GAME_SCENE_INDEX]).map.absolutePath;
-    path = path.substring(0, path.length() - 3);
-    path += "txt";
-    String[] lines = loadStrings(path);
-    if (lines == null) {
-      println(path + " not found. creating...");
-      PrintWriter pw = createWriter(path);
-      pw.flush();
-      pw.close();
-      WriteHighScoreToFile();
-    } else {
-      println("found");
-    }
-    SetHighScoreTableFromStrings(lines);
-    WriteTableToFile(path);
+  void MatchAgainst(String matchReplay) {
+    ((GameScene)sceneManager.scenes[GAME_SCENE_INDEX]).SetupMatchAgainst(matchReplay);
+    sceneManager.SwitchSceneTo(GAME_SCENE_INDEX, false, false);
   }
 
-  void WriteTableToFile(String path) {
-    PrintWriter pw = createWriter(path);
-    for (var h : highscores)
-      pw.println(h.name + " " + h.replay);
-
-    pw.flush();
-    pw.close();
-  }
-
-  void SetHighScoreTableFromStrings(String[] strings) {
-    highscores = new ArrayList<HighscoreEntry>();
-
-    if (strings != null) {
-      for (var s : strings) {
-        var split = s.split(" ");
-        highscores.add(new HighscoreEntry(split[0], split[1]));
+  void MakeDriveAgainstButtons() {
+    driveAgainstButtons = new ArrayList<Button>();
+    for (int i = 0; i < highscores.size(); i++) {
+      String replayToPlayAgainst = highscores.get(i).replay;
+      Button b = new Button("Match", new Rectangle(width/3 + 300, (i) * 50 + 25, 100, 40), ()-> {
+        MatchAgainst(replayToPlayAgainst);
       }
+      );
+      driveAgainstButtons.add(b);
     }
-    highscores.add(new HighscoreEntry(name, replay));
-
-    Collections.sort(highscores);
-    Collections.reverse(highscores);
   }
-
 
   void HandleInput() {
     if (keyCode == ENTER && name.length() > 0 && !written) {
-      WriteHighScoreToFile();
+      WriteHighScoreToDB(name, replay, ((GameScene)sceneManager.scenes[GAME_SCENE_INDEX]).map.Hash());
+      GetHighScoresFromDB(((GameScene)sceneManager.scenes[GAME_SCENE_INDEX]).map.Hash());
+      Collections.sort(highscores);
+      Collections.reverse(highscores);
+      MakeDriveAgainstButtons();
       written = true;
     }
 

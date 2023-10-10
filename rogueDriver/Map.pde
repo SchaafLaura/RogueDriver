@@ -8,7 +8,9 @@ class Map {
   int start = 4;
   int finish = 5;
 
-  String absolutePath;
+  String absolutePath = "";
+  String name = "";
+
 
   Integer Hash() {
     int total = 0;
