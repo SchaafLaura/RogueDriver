@@ -4,6 +4,7 @@ class MainMenuScene extends Scene {
   Button quit;
 
   PImage bg = loadImage("bg.png");
+  PImage test = loadImage("car.png");
 
   Button[] buttons;
 
@@ -50,6 +51,12 @@ class MainMenuScene extends Scene {
     image(bg, 0, 0);
     for (var b : buttons)
       b.Display();
+    colorMode(HSB);
+    tint(frameCount%255, 255,255);
+    image(test,10,10,64,64);
+    noTint();
+    
+    colorMode(RGB);
   }
   void HandleInput() {
   }

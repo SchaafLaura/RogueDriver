@@ -17,10 +17,11 @@ int HIGHSCORE_SCENE_INDEX = 3;
 char ESC_CHAR = (char) -1;
 
 void setup() {
-  size(1000, 1000);
+  fullScreen();
+  smooth(0);
   sceneManager = new SceneManager(new MainMenuScene(), new EditorScene(), new GameScene(), new HighscoreScene());
   sceneManager.SwitchSceneTo(MAINMENU_SCENE_INDEX, false, false);
-  
+
   //TestConnection();
 }
 

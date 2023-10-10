@@ -9,6 +9,8 @@ class GameScene extends Scene {
 
   boolean win = false;
 
+
+
   void Update() {
     if (map.tiles[player.x][player.y] == map.finish) {
       win = true;
@@ -19,16 +21,16 @@ class GameScene extends Scene {
   }
 
   void Display() {
-    background(0);
+    //background(0);
     DisplayMap();
-
     DisplayNextMove();
-
+    image(mapDisplay.pg, 0, 0, width, height);
     if (player == null)
       return;
-
     textSize(30);
     textAlign(LEFT);
+    fill(0);
+    rect(0,0,200,200);
     DisplaySteps();
     DisplayVelocity();
     DisplayGear();
@@ -61,6 +63,7 @@ class GameScene extends Scene {
   }
 
   void DisplayNextMove() {
+
     if (map == null || player == null)
       return;
 
@@ -80,29 +83,37 @@ class GameScene extends Scene {
 
 
     Line line = new Line(player.x, player.y, nextX, nextY);
-
+    mapDisplay.DisplayLine(line);
+    /*
     if (player.IsValidVelocity(player.vx + dvx, player.vy + dvy))
-      fill(190, 190, 0);
-    else
-      fill(200, 80, 0);
+     fill(190, 190, 0);
+     else
+     fill(200, 80, 0);
+     */
 
-
-
-    for (var pos : line.indices)
-      square(pos.x * scale, pos.y * scale, scale);
+    /*
+    for (var pos : line.indices) {
+     //square(pos.x * scale, pos.y * scale, scale);
+     }
+     */
   }
 
   void DisplayPlayer() {
+
+
     if (player == null)
       return;
-    float scale = float(width)/map.NX;
 
 
-    fill(0, 0, 255);
-    square(ghost.x * scale, ghost.y * scale, scale);
-
-    fill(255, 0, 255);
-    square(player.x * scale, player.y * scale, scale);
+    /*float scale = float(width)/map.NX;
+     
+     
+     fill(0, 0, 255);
+     square(ghost.x * scale, ghost.y * scale, scale);
+     
+     fill(255, 0, 255);
+     square(player.x * scale, player.y * scale, scale);
+     */
   }
 
   void DisplayMap() {
