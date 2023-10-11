@@ -14,7 +14,7 @@ class EditorScene extends Scene {
   void Display() {
     background(0);
     if (map != null)
-      mapDisplay.Display(map);
+      mapDisplay.Display(map, null);
   }
 
   void HandleInput() {

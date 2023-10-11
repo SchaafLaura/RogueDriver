@@ -23,9 +23,11 @@ class GameScene extends Scene {
     //background(0);
     DisplayMap();
     DisplayNextMove();
-    image(mapDisplay.pg, 0, 0, width, height);
+
     if (player == null)
       return;
+
+
     textSize(30);
     textAlign(LEFT);
     fill(0);
@@ -34,7 +36,7 @@ class GameScene extends Scene {
     DisplayVelocity();
     DisplayGear();
     DisplayEngine();
-    DisplayPlayer();
+    
   }
 
   void DisplaySteps() {
@@ -71,18 +73,13 @@ class GameScene extends Scene {
     int nextY = player.y + player.vy + dvy;
 
     Line line = new Line(player.x, player.y, nextX, nextY);
-    mapDisplay.DisplayLine(line);
-  }
-
-  void DisplayPlayer() {
-    if (player == null)
-      return;
+    mapDisplay.DisplayLine(line, player);
   }
 
   void DisplayMap() {
     if (map == null)
       return;
-    mapDisplay.Display(map);
+    mapDisplay.Display(map, player);
   }
 
   void HandleInput() {

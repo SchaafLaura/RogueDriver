@@ -11,4 +11,5 @@ void draw() {
   sceneManager.Update();
   if (mousePressed)
     sceneManager.HandleInput();
+    text(frameRate, width-100,100);
 }

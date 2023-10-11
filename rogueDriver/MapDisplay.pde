@@ -12,7 +12,7 @@ class MapDisplay {
 
   PImage highlight = loadImage("highlight.png");
 
-  PGraphics pg = createGraphics(1280, 720);
+  PGraphics pg;
   color[] colors = new color[]{
     color(0, 0, 0),
     color(255, 255, 255),
@@ -22,85 +22,81 @@ class MapDisplay {
     color(255, 0, 0)
   };
 
-  void Display(Map map) {
-    DisplayMap(map);
+  void Display(Map map, Player p) {
+    DisplayMap(map, p);
   }
 
-  void DisplayLine(Line line) {
-    int playerX = ((GameScene)sceneManager.scenes[GAME_SCENE_INDEX]).player.x;
-    int playerY = ((GameScene)sceneManager.scenes[GAME_SCENE_INDEX]).player.y;
-    pg.beginDraw();
-    for (var p : line.indices) {
-      int shiftedIndexX = int(p.x) - (playerX-20);
-      int shiftedIndexY = int(p.y) - (playerY-11);
-
-      float displayX = shiftedIndexX * 32;
-      float displayY =  shiftedIndexY * 32;
-      println(displayX);
-
-      pg.image(highlight, displayX, displayY);
+  void DisplayLine(Line line, Player p) {
+    int playerX = p.x;
+    int playerY = p.y;
+    float tileSize = 32 * float(width)/float(1280);
+    for (var pos : line.indices) {
+      int shiftedIndexX = int(pos.x) - (playerX-20);
+      int shiftedIndexY = int(pos.y) - (playerY-11);
+      float displayX = shiftedIndexX * tileSize;
+      float displayY =  shiftedIndexY * tileSize;
+      image(highlight, displayX, displayY, tileSize, tileSize);
     }
-    pg.endDraw();
   }
 
-  void DisplayMap(Map map) {
+  void SetupMapImage(Map map) {
+
     if (map == null)
       return;
-
+    println("setting up");
+    pg = createGraphics(map.NX * 32, map.NY * 32);
     pg.beginDraw();
-
-    int playerX = ((GameScene)sceneManager.scenes[GAME_SCENE_INDEX]).player.x;
-    int playerY = ((GameScene)sceneManager.scenes[GAME_SCENE_INDEX]).player.y;
-
-    int playerVX = ((GameScene)sceneManager.scenes[GAME_SCENE_INDEX]).player.vx;
-    int playerVY = ((GameScene)sceneManager.scenes[GAME_SCENE_INDEX]).player.vy;
-    PVector pv = new PVector(playerVX, playerVY);
-
-
-    for (int i = playerX - 20; i < playerX + 20; i++) {
-      for (int j = playerY - 11; j < playerY + 12; j++) {
-        int shiftedIndexX = i - (playerX-20);
-        int shiftedIndexY = j - (playerY-11);
-
-        float displayX = shiftedIndexX * 32;
-        float displayY = shiftedIndexY * 32;
-
-        if (i < 0 || i > map.NX - 1 || j < 0 || j > map.NY - 1) {
-          pg.image(wall, displayX, displayY);
-          continue;
-        }
+    for (int i = 0; i < map.NX; i++) {
+      for (int j = 0; j < map.NY; j++) {
 
         switch(map.tiles[i][j]) {
         case 1:
-          pg.image(road, displayX, displayY);
+          pg.image(road, i*32, j*32);
           break;
         case 2:
-          pg.image(sand, displayX, displayY);
+          pg.image(sand, i*32, j*32);
           break;
         case 3:
-          pg.image(ice, displayX, displayY);
+          pg.image(ice, i*32, j*32);
           break;
         case 4:
-          pg.image(start, displayX, displayY);
+          pg.image(start, i*32, j*32);
           break;
         case 5:
-          pg.image(finish, displayX, displayY);
+          pg.image(finish, i*32, j*32);
           break;
         default:
-          pg.image(wall, displayX, displayY);
+          pg.image(wall, i*32, j*32);
           break;
-        }
-        if (i == playerX && j == playerY) {
-
-          pg.pushMatrix();
-          pg.translate(displayX + 16, displayY+16);
-          pg.rotate(pv.heading() + radians(90));
-          pg.image(car, -16, -16);
-
-          pg.popMatrix();
         }
       }
     }
     pg.endDraw();
+  }
+
+  void DisplayMap(Map map, Player p) {
+    if (map == null)
+      return;
+
+    if (pg == null)
+      SetupMapImage(map);
+
+    float scale = float(width)/float(1280);
+
+    pushMatrix();
+    translate(-(p.x-20)*32*scale, -(p.y-11)*32*scale);
+    image(pg, 0, 0, pg.width * scale, pg.height * scale);
+    popMatrix();
+
+    PVector v = new PVector(p.vx, p.vy);
+
+    float dpx = 20 * 32 * scale;
+    float dpy = 11 * 32 * scale;
+
+    pushMatrix();
+    translate(dpx + 16*scale, dpy+16*scale);
+    rotate(v.heading() + radians(90));
+    image(car, -16*scale, -16*scale, 32 * scale, 32 * scale);
+    popMatrix();
   }
 }
