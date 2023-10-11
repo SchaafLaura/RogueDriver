@@ -22,8 +22,9 @@ class MapDisplay {
     color(255, 0, 0)
   };
 
-  void Display(Map map) {
-    DisplayMap(map);
+  void Display(Map map, float x, float y, float scale) {
+    DisplayMap(map, x, y, scale);
+    DisplayTracks(scale);
   }
 
   void DisplayLine(Line line) {
@@ -43,7 +44,16 @@ class MapDisplay {
     pg.endDraw();
   }
 
-  void DisplayMap(Map map) {
+  void DisplayTracks(float scale) {
+    /*
+    if (tracks == null)
+     return;
+     fill(trackColor);
+     for (var t : tracks)
+     square(t.x*scale, t.y*scale, scale);*/
+  }
+
+  void DisplayMap(Map map, float x, float y, float scale) {
     if (map == null)
       return;
 
@@ -62,8 +72,10 @@ class MapDisplay {
         int shiftedIndexX = i - (playerX-20);
         int shiftedIndexY = j - (playerY-11);
 
-        float displayX = shiftedIndexX * 32;
-        float displayY = shiftedIndexY * 32;
+        float displayX = x + shiftedIndexX * 32;
+        float displayY = y + shiftedIndexY * 32;
+
+
 
         if (i < 0 || i > map.NX - 1 || j < 0 || j > map.NY - 1) {
           pg.image(wall, displayX, displayY);
@@ -102,5 +114,15 @@ class MapDisplay {
       }
     }
     pg.endDraw();
+    
+    /*
+    if (map == null)
+     return;
+     for (int i = 0; i < map.NX; i++) {
+     for (int j = 0; j < map.NY; j++) {
+     fill(colors[map.tiles[i][j]]);
+     square(x + i * scale, y + j * scale, scale);
+     }
+     }*/
   }
 }

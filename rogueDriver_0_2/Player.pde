@@ -1,17 +1,13 @@
 class Ghost extends Player {
   String moveHashes;
-  int moveIndex = -1;
   Ghost(String moveHashes) {
-    this.moveHashes = new StringBuilder(moveHashes).reverse().toString();
-    moveIndex = moveHashes.length() - 1;
+    this.moveHashes =new StringBuilder(moveHashes).reverse().toString();
   }
   void NextStep() {
     if (moveHashes == "")
       return;
-    /*char nextStepHash = moveHashes.charAt(moveHashes.length() - 1);
-     moveHashes = moveHashes.substring(0, moveHashes.length() - 1);*/
-
-    char nextStepHash = moveHashes.charAt(moveIndex--);
+    char nextStepHash = moveHashes.charAt(moveHashes.length() - 1);
+    moveHashes = moveHashes.substring(0, moveHashes.length() - 1);
     DoMove(MoveFromHash(nextStepHash));
   }
 }
@@ -35,7 +31,7 @@ class Player {
   }
 
   void GoToNextPosition() {
-    var map = gameManager.GetMap();
+    var map = ((GameScene)sceneManager.scenes[GAME_SCENE_INDEX]).map;
     int newX = (int) nextPositions.get(0).x;
     int newY = (int) nextPositions.get(0).y;
 

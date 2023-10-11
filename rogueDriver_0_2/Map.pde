@@ -44,16 +44,7 @@ class Map {
     this.NY = tiles[0].length;
     this.tiles = tiles;
   }
-  
-  Map(int NX, int NY, String data){
-    this.NX = NX;
-    this.NY = NY;
-    tiles = new int[NX][NY];
-    for (int i = 0; i < NX; i++)
-      for (int j = 0; j < NY; j++)
-        tiles[i][j] = Integer.parseInt(str(data.charAt(i + j * NX)));
-  }
-  
+
   int[] GetStart() {
     if (tiles == null)
       return null;

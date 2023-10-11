@@ -1,13 +1,15 @@
 class GameScene extends Scene {
   Map map;
   MapDisplay mapDisplay = new MapDisplay();
+  //Car player;
 
   Player player;
-  ArrayList<Ghost> ghosts = new ArrayList<Ghost>();
-
+  Ghost ghost;
   int dvx, dvy;
 
   boolean win = false;
+
+
 
   void Update() {
     if (map.tiles[player.x][player.y] == map.finish) {
@@ -15,8 +17,7 @@ class GameScene extends Scene {
       sceneManager.SwitchSceneTo(HIGHSCORE_SCENE_INDEX, false, false);
     }
     player.Update();
-    for (var g : ghosts)
-      g.Update();
+    ghost.Update();
   }
 
   void Display() {
@@ -29,7 +30,7 @@ class GameScene extends Scene {
     textSize(30);
     textAlign(LEFT);
     fill(0);
-    rect(0, 0, 200, 200);
+    rect(0,0,200,200);
     DisplaySteps();
     DisplayVelocity();
     DisplayGear();
@@ -62,30 +63,68 @@ class GameScene extends Scene {
   }
 
   void DisplayNextMove() {
+
     if (map == null || player == null)
       return;
 
 
+    float scale = float(width)/map.NX;
 
-    int nextX = player.x + player.vx + dvx;
-    int nextY = player.y + player.vy + dvy;
+    int nextX;
+    int nextY;
+
+    if (player.handbrake) {
+      nextX = player.x + player.vx;
+      nextY = player.y + player.vy;
+    } else {
+      nextX = player.x + player.vx + dvx;
+      nextY = player.y + player.vy + dvy;
+    }
+
 
     Line line = new Line(player.x, player.y, nextX, nextY);
     mapDisplay.DisplayLine(line);
+    /*
+    if (player.IsValidVelocity(player.vx + dvx, player.vy + dvy))
+     fill(190, 190, 0);
+     else
+     fill(200, 80, 0);
+     */
+
+    /*
+    for (var pos : line.indices) {
+     //square(pos.x * scale, pos.y * scale, scale);
+     }
+     */
   }
 
   void DisplayPlayer() {
+
+
     if (player == null)
       return;
+
+
+    /*float scale = float(width)/map.NX;
+     
+     
+     fill(0, 0, 255);
+     square(ghost.x * scale, ghost.y * scale, scale);
+     
+     fill(255, 0, 255);
+     square(player.x * scale, player.y * scale, scale);
+     */
   }
 
   void DisplayMap() {
     if (map == null)
       return;
-    mapDisplay.Display(map);
+    float scale = float(width)/map.NX;
+    mapDisplay.Display(map, 0, 0, scale);
   }
 
   void HandleInput() {
+
     TryGoToMainMenu();
     TryReset();
 
@@ -97,13 +136,27 @@ class GameScene extends Scene {
 
     TrySteer();
 
-    Move move = gameManager.GetMoveFromCurrentKey(player, dvx, dvy);
+    Move move = null;
+
+    if (key == '#')
+      move = new SwitchEngine();
+
+    if (key == '-' && player.gear > 0)
+      move = new GearDown();
+
+    if (key == '+' && player.gear < 6)
+      move = new GearUp();
+
+    if (keyCode == ENTER)
+      move = new SwitchBrake();
+
+    if (key == ' ')
+      move = new Steer(dvx, dvy);
 
 
     if (move != null) {
       player.DoMove(move);
-      for (var g : ghosts)
-        g.NextStep();
+      ghost.NextStep();
       dvx = 0;
       dvy = 0;
     }
@@ -152,7 +205,7 @@ class GameScene extends Scene {
     println(map.Hash());
   }
 
-  void SetupMatchAgainst(ArrayList<String> ghostReplays) {
+  void SetupMatchAgainst(String ghostReplay) {
     var start = map.GetStart();
 
     player = new Player();
@@ -164,17 +217,13 @@ class GameScene extends Scene {
     player.stepsTaken = 0;
     player.nextPositions = new ArrayList<PVector>();
 
-    ghosts = new ArrayList<Ghost>();
-    for (var r : ghostReplays) {
-      Ghost g = new Ghost(r);
-      g.x = start[0];
-      g.y = start[1];
-      g.vx = 0;
-      g.vy = 0;
-      g.stepsTaken = 0;
-      g.nextPositions = new ArrayList<PVector>();
-      ghosts.add(g);
-    }
+    ghost = new Ghost(ghostReplay);
+    ghost.x = start[0];
+    ghost.y = start[1];
+    ghost.vx = 0;
+    ghost.vy = 0;
+    ghost.stepsTaken = 0;
+    ghost.nextPositions = new ArrayList<PVector>();
   }
 
   void ResetPlayerOnCurrentMap() {
@@ -189,15 +238,13 @@ class GameScene extends Scene {
     player.stepsTaken = 0;
     player.nextPositions = new ArrayList<PVector>();
 
-    for (var g : ghosts) {
-      g.x = start[0];
-      g.y = start[1];
-      g.vx = 0;
-      g.vy = 0;
-      g.stepsTaken = 0;
-      g.nextPositions = new ArrayList<PVector>();
-      g.moveIndex = g.moveHashes.length() - 1;
-    }
+    ghost = new Ghost("e1+004+115588888+77-66633+6330301110221122---e514");
+    ghost.x = start[0];
+    ghost.y = start[1];
+    ghost.vx = 0;
+    ghost.vy = 0;
+    ghost.stepsTaken = 0;
+    ghost.nextPositions = new ArrayList<PVector>();
   }
 
   void Load() {

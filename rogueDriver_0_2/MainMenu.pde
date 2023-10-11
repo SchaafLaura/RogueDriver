@@ -52,10 +52,10 @@ class MainMenuScene extends Scene {
     for (var b : buttons)
       b.Display();
     colorMode(HSB);
-    tint(frameCount%255, 255, 255);
-    image(test, 10, 10, 64, 64);
+    tint(frameCount%255, 255,255);
+    image(test,10,10,64,64);
     noTint();
-
+    
     colorMode(RGB);
   }
   void HandleInput() {
