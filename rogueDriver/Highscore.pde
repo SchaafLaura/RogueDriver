@@ -60,7 +60,9 @@ class HighscoreScene extends Scene {
   }
 
   void MatchAgainst(String matchReplay) {
-    ((GameScene)sceneManager.scenes[GAME_SCENE_INDEX]).SetupMatchAgainst(matchReplay);
+    ArrayList<String> replays = new ArrayList<String>();
+    replays.add(matchReplay);
+    ((GameScene)sceneManager.scenes[GAME_SCENE_INDEX]).SetupMatchAgainst(replays);
     sceneManager.SwitchSceneTo(GAME_SCENE_INDEX, false, false);
   }
 
