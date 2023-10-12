@@ -9,7 +9,6 @@ class MapDisplay {
   PImage ice = loadImage("ice.png");
   PImage sand = loadImage("sand.png");
   PImage wall = loadImage("wall.png");
-
   PImage highlight = loadImage("highlight.png");
 
   PGraphics pg;
@@ -99,15 +98,15 @@ class MapDisplay {
     rotate(v.heading() + radians(90));
     image(car, -16*scale, -16*scale, tileSize, tileSize);
     popMatrix();
-    
+
     tint(80, 80, 200, 100);
-    for(var g : ghosts){
+    for (var g : ghosts) {
       PVector ghostV = new PVector(g.vx, g.vy);
       int ghostOffsetX = -g.x + p.x;
       int ghostOffsetY = -g.y + p.y;
       float gdpx = (20 - ghostOffsetX) * tileSize;
       float gdpy = (12 - ghostOffsetY) * tileSize;
-      
+
       pushMatrix();
       translate(gdpx + tileSize/2, gdpy-tileSize/2);
       rotate(ghostV.heading() + radians(90));
@@ -115,6 +114,5 @@ class MapDisplay {
       popMatrix();
     }
     noTint();
-    
   }
 }

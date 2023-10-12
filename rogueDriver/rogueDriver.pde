@@ -7,6 +7,7 @@ void setup() {
 }
 
 void draw() {
+  background(0);
   sceneManager.Display();
   sceneManager.Update();
   if (mousePressed)

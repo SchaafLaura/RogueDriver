@@ -3,7 +3,7 @@ class GameManager {
     if (sceneManager.activeScene == GAME_SCENE_INDEX || sceneManager.activeScene == HIGHSCORE_SCENE_INDEX)
       return ((GameScene)sceneManager.scenes[GAME_SCENE_INDEX]).map;
     else if (sceneManager.activeScene == EDITOR_SCENE_INDEX)
-      return ((EditorScene)sceneManager.scenes[ EDITOR_SCENE_INDEX]).map;
+      return ((EditorScene)sceneManager.scenes[EDITOR_SCENE_INDEX]).map;
     return null;
   }
 

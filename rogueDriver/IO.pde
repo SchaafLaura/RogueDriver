@@ -14,11 +14,15 @@ void LoadTrack(File fileSelected) {
     ((EditorScene)sceneManager.scenes[EDITOR_SCENE_INDEX]).map.tiles = ImgToData(img);
     ((EditorScene)sceneManager.scenes[EDITOR_SCENE_INDEX]).map.absolutePath = fileSelected.getAbsolutePath();
     ((EditorScene)sceneManager.scenes[EDITOR_SCENE_INDEX]).map.name = name;
+    ((EditorScene)sceneManager.scenes[EDITOR_SCENE_INDEX]).map.NX = img.width;
+    ((EditorScene)sceneManager.scenes[EDITOR_SCENE_INDEX]).map.NY = img.height;
   }
   if (sceneManager.activeScene == GAME_SCENE_INDEX) {
     ((GameScene)sceneManager.scenes[GAME_SCENE_INDEX]).LoadMap(new Map(ImgToData(img)));
     ((GameScene)sceneManager.scenes[GAME_SCENE_INDEX]).map.absolutePath = fileSelected.getAbsolutePath();
     ((GameScene)sceneManager.scenes[GAME_SCENE_INDEX]).map.name = name;
+    ((GameScene)sceneManager.scenes[GAME_SCENE_INDEX]).map.NX = img.width;
+    ((GameScene)sceneManager.scenes[GAME_SCENE_INDEX]).map.NY = img.height;
   }
 
   loop();
