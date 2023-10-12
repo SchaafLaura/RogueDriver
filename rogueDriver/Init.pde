@@ -6,5 +6,5 @@ void Init() {
   scale = float(width) / resXNative;
   tileSize = tileSizeNative * scale;
 
-  sceneManager = new SceneManager();
+  sceneManager = new SceneManager(new MainMenuScene(), new GameScene(), new EditorScene());
 }

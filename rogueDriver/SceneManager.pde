@@ -24,6 +24,12 @@ class SceneManager {
     scenes[activeScene].HandleInput();
   }
 
+  public void HandleMouseWheel(float turn) {
+    if (activeScene == -1)
+      return;
+    scenes[activeScene].HandleMouseWheel(turn);
+  }
+
   public void Update() {
     if (activeScene == -1)
       return;
@@ -41,6 +47,7 @@ abstract class Scene {
   abstract void Update();
   abstract void Display();
   abstract void HandleInput();
+  abstract void HandleMouseWheel(float turn);
   abstract void Load();
   abstract void Unload();
 }

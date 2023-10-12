@@ -149,3 +149,32 @@ class Line {
     }
   }
 }
+
+PImage TileDataToImg(int[][] tileData) {
+  PImage ret = new PImage(tileData.length, tileData[0].length);
+  HashMap<Integer, Integer> colorsToIndices = new HashMap<Integer, Integer>();
+  for (int i = 0; i < mapColors.length; i++)
+    colorsToIndices.put(i, mapColors[i]);
+
+  ret.loadPixels();
+  for (int i = 0; i < ret.width; i++) {
+    for (int j = 0; j < ret.height; j++) {
+      ret.pixels[i + j*ret.width] = colorsToIndices.get(tileData[i][j]);
+    }
+  }
+  ret.updatePixels();
+  return ret;
+}
+
+int[][] ImgToTileData(PImage img) {
+  HashMap<Integer, Integer> colorsToIndices = new HashMap<Integer, Integer>();
+  for (int i = 0; i < mapColors.length; i++)
+    colorsToIndices.put(mapColors[i], i);
+  int[][] ret = new int[img.width][img.height];
+  for (int i = 0; i < img.width; i++) {
+    for (int j = 0; j < img.height; j++) {
+      ret[i][j] = colorsToIndices.get(img.get(i, j));
+    }
+  }
+  return ret;
+}
