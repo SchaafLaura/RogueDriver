@@ -36,6 +36,7 @@ void LoadTrackToLevelAndSwitchScene(File fileSelected) {
   gameScene.map.absolutePath = fileSelected.getAbsolutePath();
   gameScene.map.name = name;
   gameScene.SetupPlayerOnCurrentMap();
+  gameScene.mapDisplay = new MapDisplay();
   sceneManager.SwitchSceneTo(GAME_SCENE_INDEX, false, false);
   loop();
 }

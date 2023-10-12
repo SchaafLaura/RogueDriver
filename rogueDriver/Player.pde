@@ -58,6 +58,14 @@ class Player {
     stepsTaken++;
   }
 
+  int Velocity() {
+    return max(abs(vx), abs(vy));
+  }
+
+  boolean IsDriving() {
+    return nextPositions.size() > 0;
+  }
+
   void Drive() {
     Line moves = new Line(x, y, x + vx, y + vy);
     nextPositions.addAll(moves.indices);
