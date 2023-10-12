@@ -15,3 +15,42 @@ void UploadMap(Map map) {
     println(e);
   }
 }
+
+void WriteHighScoreToDB(String name, String replay, int mapHash) {
+  try {
+    Connection con = DriverManager.getConnection("jdbc:mysql://playerAcc:Play3rp4s$123!@containers-us-west-39.railway.app:6917/railway");
+    String query = "INSERT INTO records (user_name, map_hash, replay) VALUES('" + name + "'," + mapHash + ",'" + replay + "')";
+    Statement stmt = con.createStatement();
+    stmt.execute(query);
+    con.close();
+  }
+  catch(Exception e) {
+    println(e);
+  }
+}
+
+ArrayList<HighscoreEntry> GetHighScoresFromDB(int mapHash) {
+  try {
+    Connection con = DriverManager.getConnection("jdbc:mysql://playerAcc:Play3rp4s$123!@containers-us-west-39.railway.app:6917/railway");
+    //String query = "INSERT INTO records (user_name, map_hash, replay) VALUES('" + name + "'," + mapHash + ",'" + replay + "')";
+    String query = "SELECT * FROM records WHERE map_hash = " + mapHash;
+    Statement stmt = con.createStatement();
+    ResultSet result = stmt.executeQuery(query);
+
+    ((HighscoreScene)sceneManager.scenes[HIGHSCORE_SCENE_INDEX]).highscores = new ArrayList<HighscoreEntry>();
+
+    ArrayList<HighscoreEntry> hs = new ArrayList<HighscoreEntry>();
+    while (result.next()) {
+      String name = result.getString("user_name");
+      String replay = result.getString("replay");
+      HighscoreEntry entry = new HighscoreEntry(name, replay);
+      hs.add(entry);
+    }
+    con.close();
+    return hs;
+  }
+  catch(Exception e) {
+    println(e);
+    return null;
+  }
+}

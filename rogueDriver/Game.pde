@@ -1,5 +1,6 @@
 class GameScene extends Scene {
   Map map;
+  Player player;
   void Update() {
   }
   void Display() {
@@ -19,6 +20,9 @@ class GameScene extends Scene {
 
   void LoadMapFromTileData(int[][] tileData) {
     this.map = new Map(tileData);
+  }
+
+  void SetupMatchAgainst(ArrayList<String> ghostReplays) {
   }
 
   void SetupPlayerOnCurrentMap() {

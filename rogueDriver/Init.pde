@@ -1,5 +1,5 @@
 SceneManager sceneManager;
-
+GameManager gameManager;
 float scale;
 float tileSize;
 void Init() {
@@ -7,4 +7,5 @@ void Init() {
   tileSize = tileSizeNative * scale;
 
   sceneManager = new SceneManager(new MainMenuScene(), new GameScene(), new EditorScene());
+  gameManager = new GameManager();
 }
