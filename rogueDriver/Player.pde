@@ -8,9 +8,8 @@ class Ghost extends Player {
   void NextStep() {
     if (moveHashes == "")
       return;
-    /*char nextStepHash = moveHashes.charAt(moveHashes.length() - 1);
-     moveHashes = moveHashes.substring(0, moveHashes.length() - 1);*/
-
+    if(moveIndex < 0)
+      return;
     char nextStepHash = moveHashes.charAt(moveIndex--);
     DoMove(MoveFromHash(nextStepHash));
   }

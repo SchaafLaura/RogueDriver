@@ -22,8 +22,8 @@ class MapDisplay {
     color(255, 0, 0)
   };
 
-  void Display(Map map, Player p) {
-    DisplayMap(map, p);
+  void Display(Map map, Player p, ArrayList<Ghost> ghosts) {
+    DisplayMap(map, p, ghosts);
   }
 
   void DisplayLine(Line line, Player p) {
@@ -74,7 +74,7 @@ class MapDisplay {
     pg.endDraw();
   }
 
-  void DisplayMap(Map map, Player p) {
+  void DisplayMap(Map map, Player p, ArrayList<Ghost> ghosts) {
     if (map == null)
       return;
 
@@ -82,6 +82,7 @@ class MapDisplay {
       SetupMapImage(map);
 
     float scale = float(width)/float(1280);
+    float tileSize = 32 * scale;
 
     pushMatrix();
     translate(-(p.x-20)*32*scale, -(p.y-11)*32*scale);
@@ -90,13 +91,30 @@ class MapDisplay {
 
     PVector v = new PVector(p.vx, p.vy);
 
-    float dpx = 20 * 32 * scale;
-    float dpy = 11 * 32 * scale;
+    float dpx = 20 * tileSize;
+    float dpy = 11 * tileSize;
 
     pushMatrix();
     translate(dpx + 16*scale, dpy+16*scale);
     rotate(v.heading() + radians(90));
-    image(car, -16*scale, -16*scale, 32 * scale, 32 * scale);
+    image(car, -16*scale, -16*scale, tileSize, tileSize);
     popMatrix();
+    
+    tint(80, 80, 200, 100);
+    for(var g : ghosts){
+      PVector ghostV = new PVector(g.vx, g.vy);
+      int ghostOffsetX = -g.x + p.x;
+      int ghostOffsetY = -g.y + p.y;
+      float gdpx = (20 - ghostOffsetX) * tileSize;
+      float gdpy = (12 - ghostOffsetY) * tileSize;
+      
+      pushMatrix();
+      translate(gdpx + tileSize/2, gdpy-tileSize/2);
+      rotate(ghostV.heading() + radians(90));
+      image(car, -tileSize/2, -tileSize/2, tileSize, tileSize);
+      popMatrix();
+    }
+    noTint();
+    
   }
 }

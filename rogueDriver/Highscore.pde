@@ -62,8 +62,19 @@ class HighscoreScene extends Scene {
   void MatchAgainst(String matchReplay) {
     ArrayList<String> replays = new ArrayList<String>();
     replays.add(matchReplay);
+    
+    for(var h : highscores){
+      replays.add(h.replay);
+    }
+    
     ((GameScene)sceneManager.scenes[GAME_SCENE_INDEX]).SetupMatchAgainst(replays);
     sceneManager.SwitchSceneTo(GAME_SCENE_INDEX, false, false);
+
+    name = "";
+    score = -1;
+    replay = "";
+    highscores = new ArrayList<HighscoreEntry>();
+    driveAgainstButtons = new ArrayList<Button>();
   }
 
   void MakeDriveAgainstButtons() {

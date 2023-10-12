@@ -9,6 +9,8 @@ class GameScene extends Scene {
 
   boolean win = false;
 
+  PImage testUI = loadImage("testUI.png");
+
   void Update() {
     if (map.tiles[player.x][player.y] == map.finish) {
       win = true;
@@ -36,7 +38,7 @@ class GameScene extends Scene {
     DisplayVelocity();
     DisplayGear();
     DisplayEngine();
-    
+    image(testUI, 0, 0, width, height);
   }
 
   void DisplaySteps() {
@@ -79,7 +81,7 @@ class GameScene extends Scene {
   void DisplayMap() {
     if (map == null)
       return;
-    mapDisplay.Display(map, player);
+    mapDisplay.Display(map, player, ghosts);
   }
 
   void HandleInput() {
@@ -91,6 +93,10 @@ class GameScene extends Scene {
 
     if (player.IsDriving())
       return;
+
+    for (var g : ghosts)
+      if (g.IsDriving())
+        return;
 
     TrySteer();
 
