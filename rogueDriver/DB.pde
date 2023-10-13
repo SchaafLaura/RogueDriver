@@ -1,3 +1,29 @@
+ArrayList<Map> GetAllMapsFromDatabase() {
+  ArrayList<Map> ret = new ArrayList<Map>();
+
+  try {
+    Connection con = DriverManager.getConnection("jdbc:mysql://playerAcc:Play3rp4s$123!@containers-us-west-39.railway.app:6917/railway");
+    String query = "SELECT * FROM maps";
+    Statement stmt = con.createStatement();
+    ResultSet result = stmt.executeQuery(query);
+    while (result.next()) {
+      String map_name = result.getString("map_name");
+      String map_data = result.getString("map_data");
+      Integer map_width = result.getInt("map_width");
+      Integer map_height = result.getInt("map_height");
+
+      Map m = new Map(map_width, map_height, map_data);
+      m.name = map_name;
+      ret.add(m);
+    }
+    return ret;
+  }
+  catch(Exception e) {
+    println(e);
+    return null;
+  }
+}
+
 void UploadMap(Map map) {
   String map_data = map.toString();
   Integer map_width = map.NX;

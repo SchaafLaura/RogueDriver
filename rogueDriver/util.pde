@@ -1,3 +1,24 @@
+class PictureButton extends Button {
+  PImage pic;
+  PictureButton(PImage pic, String label, Rectangle boundingBox, Runnable function) {
+    super(label, boundingBox, function);
+    this.pic = pic;
+  }
+
+  void Display() {
+    image(pic, boundingBox.x, boundingBox.y, boundingBox.w, boundingBox.h);
+    boolean isMouseOver = boundingBox.IsPointInside(mouseX, mouseY);
+    noFill();
+    stroke(isMouseOver ? color(255, 0, 255)  : normalColor);
+    strokeWeight(isMouseOver ? 4 : 1);
+    rect(boundingBox.x, boundingBox.y, boundingBox.w, boundingBox.h);
+    fill(isMouseOver ? color(255, 0, 255) : normalColor);
+    textAlign(LEFT, CENTER);
+    textSize(30);
+    text(label, boundingBox.x, boundingBox.y+boundingBox.h/2.0);
+  }
+}
+
 class Button {
   String label;
   Rectangle boundingBox;

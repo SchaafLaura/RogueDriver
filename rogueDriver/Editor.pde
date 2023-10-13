@@ -110,8 +110,6 @@ class EditorScene extends Scene {
     if (brushSize < 1)
       brushSize = 1;
 
-    println(brushSize);
-
     if (key == 'u')
       UploadMap(map);
 

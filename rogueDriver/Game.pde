@@ -158,6 +158,11 @@ class GameScene extends Scene {
   }
 
   void HandleMouseWheel(float turn) {
+    zoomLevel *= turn > 0 ? 1.1 : 0.9;
+    scale = zoomLevel * float(width) / resXNative;
+    tileSize = tileSizeNative * scale;
+    tileSize_half = tileSize * 0.5;
+    mapDisplay = new MapDisplay();
   }
 
   void LoadMapFromTileData(int[][] tileData) {

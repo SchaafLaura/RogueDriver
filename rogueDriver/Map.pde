@@ -17,9 +17,9 @@ class Map {
 
   String toString() {
     String ret = "";
-    for (int i = 0; i < NX; i++)
-      for (int j = 0; j < NY; j++)
-        ret += str(tiles[i][j]);
+    for (int i = 0; i < NY; i++)
+      for (int j = 0; j < NX; j++)
+        ret += str(tiles[j][i]);
     return ret;
   }
 
@@ -48,6 +48,7 @@ class Map {
     for (int i = 0; i < NX; i++)
       for (int j = 0; j < NY; j++)
         tiles[i][j] = Integer.parseInt(str(data.charAt(i + j * NX)));
+    img = TileDataToImg(tiles);
   }
 
   int[] GetStart() {

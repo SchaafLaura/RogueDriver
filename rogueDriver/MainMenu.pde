@@ -7,6 +7,7 @@ class MainMenuScene extends Scene {
 
   Button[] buttons;
 
+
   MainMenuScene() {
     bg = loadImage("bg_mainmenu.png");
     bg.resize(width, height);

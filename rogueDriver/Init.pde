@@ -4,10 +4,17 @@ float scale;
 float tileSize;
 float tileSize_half;
 void Init() {
-  scale = 0.5*float(width) / resXNative;
+  scale = zoomLevel * float(width) / resXNative;
   tileSize = tileSizeNative * scale;
   tileSize_half = tileSize * 0.5;
 
-  sceneManager = new SceneManager(new MainMenuScene(), new GameScene(), new EditorScene(), new HighscoreScene());
+  sceneManager = new SceneManager(
+    new MainMenuScene(),
+    new GameScene(),
+    new EditorScene(),
+    new HighscoreScene(),
+    new MapSelectionLocalScene(),
+    new MapSelectionOnlineScene()
+    );
   gameManager = new GameManager();
 }

@@ -6,13 +6,16 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Date;
 import java.util.*;
+import java.io.*;
 
 void setup() {
   fullScreen();
   smooth(0);
   Init();
-  sceneManager.SwitchSceneTo(MAINMENU_SCENE_INDEX, false, false);
+  sceneManager.SwitchSceneTo(MAPSELECTIONONLINE_SCENE_INDEX, false, true);
 }
+
+float zoomLevel = 1.0;
 
 void draw() {
   background(0);
@@ -49,6 +52,9 @@ int MAINMENU_SCENE_INDEX = 0;
 int GAME_SCENE_INDEX = 1;
 int EDITOR_SCENE_INDEX = 2;
 int HIGHSCORE_SCENE_INDEX = 3;
+int MAPSELECTIONLOCAL_SCENE_INDEX = 4;
+int MAPSELECTIONONLINE_SCENE_INDEX = 5;
+
 char ESC_CHAR = (char) -1;
 float tileSizeNative = 32;
 float resXNative = 1280;
