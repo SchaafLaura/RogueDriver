@@ -12,7 +12,7 @@ void setup() {
   fullScreen();
   smooth(0);
   Init();
-  sceneManager.SwitchSceneTo(MAPSELECTIONONLINE_SCENE_INDEX, false, true);
+  sceneManager.SwitchSceneTo(MAPSELECTIONLOCAL_SCENE_INDEX, false, true);
 }
 
 float zoomLevel = 1.0;
@@ -26,7 +26,6 @@ void draw() {
 
   if (mousePressed)
     sceneManager.HandleInput();
-
 
   fill(255, 0, 0);
   text(frameRate, width-100, 100);
