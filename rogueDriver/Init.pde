@@ -4,7 +4,7 @@ float scale;
 float tileSize;
 float tileSize_half;
 void Init() {
-  scale = float(width) / resXNative;
+  scale = 0.5*float(width) / resXNative;
   tileSize = tileSizeNative * scale;
   tileSize_half = tileSize * 0.5;
 

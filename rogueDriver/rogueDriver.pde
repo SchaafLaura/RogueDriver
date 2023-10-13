@@ -1,3 +1,12 @@
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Date;
+import java.util.*;
+
 void setup() {
   fullScreen();
   smooth(0);
@@ -12,9 +21,9 @@ void draw() {
 
   sceneManager.Display();
 
-  if(mousePressed)
+  if (mousePressed)
     sceneManager.HandleInput();
-  
+
 
   fill(255, 0, 0);
   text(frameRate, width-100, 100);
@@ -35,16 +44,6 @@ color[] mapColors = new color[]{
   color(0, 255, 0), // start
   color(255, 0, 0) // finish
 };
-
-
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.Date;
-import java.util.*;
 
 int MAINMENU_SCENE_INDEX = 0;
 int GAME_SCENE_INDEX = 1;

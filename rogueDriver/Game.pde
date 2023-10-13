@@ -132,7 +132,7 @@ class GameScene extends Scene {
       dvy = prevDVY;
     }
 
-    if (newVelocity > prevVelocity && !player.IsValidVelocity(vx+dvx, vy+dvy)) {
+    if (newVelocity > prevVelocity && !player.IsValidVelocity(player.vx+dvx, player.vy+dvy)) {
       dvx = prevDVX;
       dvy = prevDVY;
     }
