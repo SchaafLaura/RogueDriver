@@ -20,6 +20,22 @@ class MapDisplay {
   }
 
   PGraphics mapImage;
+  PGraphics miniMapImage;
+  
+  PGraphics GetMiniMap(Map map, Player p, ArrayList<Ghost> ghosts){
+    miniMapImage = createGraphics(map.NX, map.NY);
+    miniMapImage.beginDraw();
+    miniMapImage.image(map.img, 0, 0);
+    miniMapImage.fill(80, 80, 200, 100);
+    miniMapImage.noStroke();
+    for(var g : ghosts)
+      miniMapImage.circle(g.x, g.y, 3);
+    miniMapImage.fill(255, 0, 0);
+    miniMapImage.circle(p.x, p.y, 4);
+    miniMapImage.endDraw();
+    return miniMapImage;
+    
+  }
 
   void DisplayLine(Line line, Player p) {
     int playerX = p.x;
@@ -76,7 +92,6 @@ class MapDisplay {
   void SetupMapImage(Map map) {
     if (map == null)
       return;
-    println("setting up");
     mapImage = createGraphics(int(map.NX * tileSize), int(map.NY * tileSize));
     mapImage.beginDraw();
     for (int i = 0; i < map.NX; i++) {

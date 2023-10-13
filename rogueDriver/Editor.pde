@@ -44,10 +44,12 @@ class EditorScene extends Scene {
   }
 
   void HandleMouseWheel(float turn) {
+    float zoomAmount = -turn;
+
     float prevX = (mouseX-xOff)/editorTileSize;
     float prevY = (mouseY-yOff)/editorTileSize;
 
-    editorTileSize = constrain(editorTileSize - turn, 1, 100);
+    editorTileSize = constrain(editorTileSize + zoomAmount, 1, 100);
 
     float newX = (mouseX-xOff)/editorTileSize;
     float newY = (mouseY-yOff)/editorTileSize;

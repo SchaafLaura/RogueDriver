@@ -85,6 +85,7 @@ class HighscoreScene extends Scene {
     playerReplay = "";
     highscores = null;
     driveAgainstButtons = null;
+    writtenToDatabase = false;
   }
 
 

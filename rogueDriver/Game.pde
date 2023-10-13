@@ -34,6 +34,12 @@ class GameScene extends Scene {
     DisplayVelocity();
     DisplayGear();
     DisplayEngine();
+    DisplayMiniMap();
+  }
+
+  void DisplayMiniMap() {
+    var mm  = mapDisplay.GetMiniMap(map, player, ghosts);
+    image(mm, width - mm.width*2, 0, mm.width*2, mm.height*2);
   }
 
   void DisplaySteps() {
@@ -122,6 +128,11 @@ class GameScene extends Scene {
 
     int newVelocity = max(abs(player.vx + dvx), abs(player.vy + dvy));
     if (!player.engineRunning && newVelocity > prevVelocity) {
+      dvx = prevDVX;
+      dvy = prevDVY;
+    }
+
+    if (newVelocity > prevVelocity && !player.IsValidVelocity(vx+dvx, vy+dvy)) {
       dvx = prevDVX;
       dvy = prevDVY;
     }
