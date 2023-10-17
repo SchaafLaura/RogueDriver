@@ -12,6 +12,8 @@ class MapSelectionOnlineScene extends Scene {
   void HandleInput() {
     for (var b : mapButtons)
       b.TryClick();
+    if (escDown)
+      sceneManager.Load(MAINMENU_SCENE_INDEX, false, false);
   }
   void HandleMouseWheel(float turn) {
     for (var b : mapButtons)
@@ -39,7 +41,7 @@ class MapSelectionOnlineScene extends Scene {
         gameScene.map = m;
         gameScene.mapDisplay = new MapDisplay();
         gameScene.SetupPlayerOnCurrentMap();
-        sceneManager.SwitchSceneTo(GAME_SCENE_INDEX, false, false);
+        sceneManager.Load(GAME_SCENE_INDEX, false, false);
       }
 
       );
@@ -70,6 +72,8 @@ class MapSelectionLocalScene extends Scene {
   void HandleInput() {
     for (var b : mapButtons)
       b.TryClick();
+    if (escDown)
+      sceneManager.Load(MAINMENU_SCENE_INDEX, false, false);
   }
   void HandleMouseWheel(float turn) {
     for (var b : mapButtons)

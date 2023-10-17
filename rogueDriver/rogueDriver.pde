@@ -12,7 +12,6 @@ void setup() {
   fullScreen();
   smooth(0);
   Init();
-  sceneManager.SwitchSceneTo(MAPSELECTIONLOCAL_SCENE_INDEX, false, true);
 }
 
 float zoomLevel = 1.0;
@@ -45,6 +44,15 @@ color[] mapColors = new color[]{
   color(150, 150, 250), // ice
   color(0, 255, 0), // start
   color(255, 0, 0) // finish
+};
+
+String[] materialNames = new String[]{
+  "wall",
+  "road",
+  "sand",
+  "ice", 
+  "start",
+  "finish"
 };
 
 int MAINMENU_SCENE_INDEX = 0;

@@ -14,7 +14,7 @@ void LoadTrackToEditorAndSwitchScene(File fileSelected) {
   editorScene.LoadMapFromTileData(ImgToTileData(img));
   editorScene.map.absolutePath = fileSelected.getAbsolutePath();
   editorScene.map.name = name;
-  sceneManager.SwitchSceneTo(EDITOR_SCENE_INDEX, false, false);
+  sceneManager.Load(EDITOR_SCENE_INDEX, false, false);
   loop();
 }
 
@@ -37,7 +37,7 @@ void LoadTrackToLevelAndSwitchScene(File fileSelected) {
   gameScene.map.name = name;
   gameScene.SetupPlayerOnCurrentMap();
   gameScene.mapDisplay = new MapDisplay();
-  sceneManager.SwitchSceneTo(GAME_SCENE_INDEX, false, false);
+  sceneManager.Load(GAME_SCENE_INDEX, false, false);
   loop();
 }
 

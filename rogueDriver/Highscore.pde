@@ -78,7 +78,7 @@ class HighscoreScene extends Scene {
     }
 
     ((GameScene)sceneManager.scenes[GAME_SCENE_INDEX]).SetupMatchAgainst(replays);
-    sceneManager.SwitchSceneTo(GAME_SCENE_INDEX, false, false);
+    sceneManager.Load(GAME_SCENE_INDEX, false, false);
 
     playerName = "";
     playerScore = -1;
@@ -117,7 +117,7 @@ class HighscoreScene extends Scene {
       playerName = "";
       playerScore = -1;
       highscores = null;
-      sceneManager.SwitchSceneTo(MAINMENU_SCENE_INDEX, false, false);
+      sceneManager.Load(MAINMENU_SCENE_INDEX, false, false);
       writtenToDatabase = false;
       return;
     }

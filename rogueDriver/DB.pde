@@ -58,7 +58,6 @@ void WriteHighScoreToDB(String name, String replay, int mapHash) {
 ArrayList<HighscoreEntry> GetHighScoresFromDB(int mapHash) {
   try {
     Connection con = DriverManager.getConnection("jdbc:mysql://playerAcc:Play3rp4s$123!@containers-us-west-39.railway.app:6917/railway");
-    //String query = "INSERT INTO records (user_name, map_hash, replay) VALUES('" + name + "'," + mapHash + ",'" + replay + "')";
     String query = "SELECT * FROM records WHERE map_hash = " + mapHash;
     Statement stmt = con.createStatement();
     ResultSet result = stmt.executeQuery(query);

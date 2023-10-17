@@ -1,7 +1,7 @@
 class MainMenuScene extends Scene {
-  Button levelSelect;
-  Button editor;
-  Button quit;
+  /* Button levelSelectLocal;
+   Button editor;
+   Button quit;*/
 
   PImage bg;
 
@@ -11,41 +11,56 @@ class MainMenuScene extends Scene {
   MainMenuScene() {
     bg = loadImage("bg_mainmenu.png");
     bg.resize(width, height);
-    buttons = new Button[3];
+    buttons = new Button[4];
 
-    Button levelSelect = new Button(
-      "Select Level",
+    Button levelSelectOnline = new Button(
+      "Online Levels",
       new Rectangle(width/2-100, height/2, 200, 50),
+      () -> {
+      noLoop();
+      sceneManager.Load(MAPSELECTIONONLINE_SCENE_INDEX, false, true);
+      loop();
+    }
+
+    );
+
+    Button levelSelectLocal = new Button(
+      "Select Level",
+      new Rectangle(width/2-100, height/2 + 100, 200, 50),
       () -> {  // switch Scene to LevelSelect
       noLoop();
-      selectInput("Select a track to edit:", "LoadTrackToLevelAndSwitchScene");
-      if (gameManager.GetMap() == null)
-      return;
-      sceneManager.SwitchSceneTo(GAME_SCENE_INDEX, false, true);
+      /*selectInput("Select a track to edit:", "LoadTrackToLevelAndSwitchScene");
+       if (gameManager.GetMap() == null)
+       return;
+       sceneManager.SwitchSceneTo(GAME_SCENE_INDEX, false, true);*/
+
+      sceneManager.Load(MAPSELECTIONLOCAL_SCENE_INDEX, false, true);
+      loop();
     }
     );
 
 
     Button editor = new Button(
       "Editor",
-      new Rectangle(width/2-100, height/2 + 100, 200, 50),
+      new Rectangle(width/2-100, height/2 + 200, 200, 50),
       () -> {    // switch Scene to Editor
       ((EditorScene)sceneManager.scenes[EDITOR_SCENE_INDEX]).SetupDefaultMap();
-      sceneManager.SwitchSceneTo(EDITOR_SCENE_INDEX, false, false);
+      sceneManager.Load(EDITOR_SCENE_INDEX, false, true);
     }
     );
 
     Button quit = new Button(
       "Quit",
-      new Rectangle(width/2-100, height/2 + 200, 200, 50),
+      new Rectangle(width/2-100, height/2 + 300, 200, 50),
       () -> {
       exit();
     }
     );
 
-    buttons[0] = levelSelect;
-    buttons[1] = editor;
-    buttons[2] = quit;
+    buttons[0] = levelSelectOnline;
+    buttons[1] = levelSelectLocal;
+    buttons[2] = editor;
+    buttons[3] = quit;
   }
 
   void Update() {

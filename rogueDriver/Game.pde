@@ -9,7 +9,7 @@ class GameScene extends Scene {
   void Update() {
     if (map.tiles[player.x][player.y] == finish) {
       win = true;
-      sceneManager.SwitchSceneTo(HIGHSCORE_SCENE_INDEX, false, false);
+      sceneManager.Load(HIGHSCORE_SCENE_INDEX, false, false);
     }
     player.Update();
     for (var g : ghosts)
@@ -147,7 +147,7 @@ class GameScene extends Scene {
 
   void TryGoToMainMenu() {
     if (escDown) {
-      sceneManager.SwitchSceneTo(MAINMENU_SCENE_INDEX, false, false);
+      sceneManager.Load(MAINMENU_SCENE_INDEX, false, false);
       return;
     }
   }

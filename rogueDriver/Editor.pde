@@ -5,6 +5,8 @@ class EditorScene extends Scene {
   float editorTileSize = 10;
 
   float xOff, yOff;
+
+  ArrayList<PictureButton> materialButtons;
   void Update() {
   }
   void Display() {
@@ -34,6 +36,11 @@ class EditorScene extends Scene {
         }
       }
     }
+
+    if (materialButtons == null)
+      return;
+    for (var b : materialButtons)
+      b.Display();
   }
   void HandleInput() {
     if (keyPressed)
@@ -60,6 +67,16 @@ class EditorScene extends Scene {
 
 
   void HandleMousepress() {
+    if (materialButtons != null)
+      for (var b : materialButtons)
+        if (b.TryClick())
+          return;
+
+    for (var b : materialButtons)
+      if (b.boundingBox.IsPointInside(mouseX, mouseY))
+        return;
+
+
     if (mouseButton == RIGHT) {
       int x = int((mouseX-xOff)/editorTileSize);
       int y = int((mouseY-yOff)/editorTileSize);
@@ -114,11 +131,42 @@ class EditorScene extends Scene {
       UploadMap(map);
 
     if (escDown)
-      sceneManager.SwitchSceneTo(MAINMENU_SCENE_INDEX, false, false);
+      sceneManager.Load(MAINMENU_SCENE_INDEX, false, false);
   }
 
 
   void Load() {
+    if (materialButtons != null)
+      return;
+
+    materialButtons = new ArrayList<PictureButton>();
+    for (int i = 0; i < mapColors.length; i++) {
+      String name = materialNames[i];
+      color col = mapColors[i];
+      int mat = i;
+      PGraphics img = createGraphics((int)tileSize*2, (int)tileSize*2);
+      img.beginDraw();
+      img.background(col);
+      img.endDraw();
+      
+      float w = tileSize*2;
+      float h = tileSize*2;
+      
+      float x = 10 + w*i;
+      float y = 10;
+
+      Rectangle rect = new Rectangle(x, y, w, h);
+
+      var pb = new PictureButton(
+        img,
+        name,
+        rect,
+        () -> {
+        ((EditorScene)sceneManager.scenes[EDITOR_SCENE_INDEX]).brush = mat;
+      }
+      );
+      materialButtons.add(pb);
+    }
   }
   void Unload() {
   }

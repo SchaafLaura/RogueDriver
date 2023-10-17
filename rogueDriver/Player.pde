@@ -17,6 +17,8 @@ class Player {
 
   void GoToNextPosition() {
     var map = gameManager.GetMap();
+    if (map == null)
+      return;
     int newX = (int) nextPositions.get(0).x;
     int newY = (int) nextPositions.get(0).y;
 

@@ -55,16 +55,17 @@ class Button {
     mouseButton = 0;
   }
 
-  void TryClick() {
+  Boolean TryClick() {
     if (!mousePressed)
-      return;
+      return false;
     if (mouseButton != 37)
-      return;
+      return false;
     if (frameCount <= frameLastClicked+1)
-      return;
+      return false;
     if (!boundingBox.IsPointInside(mouseX, mouseY))
-      return;
+      return false;
     OnClick();
+    return true;
   }
 }
 
