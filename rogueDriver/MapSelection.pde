@@ -1,80 +1,6 @@
 class MapSelectionOnlineScene extends Scene {
-  //ArrayList<PictureButton> mapButtons;
   ArrayList<Map> maps;
 
-  public void mouseEvent(MouseEvent e) {
-  }
-  public void keyEvent(KeyEvent e) {
-  }
-
-  void Update() {
-  }
-  void Display() {
-    /*if (mapButtons == null)
-     return;
-     for (var b : mapButtons)
-     b.Display();*/
-  }
-
-  /*
-  void HandleInput() {
-   for (var b : mapButtons)
-   b.TryClick();
-   if (escDown)
-   sceneManager.Load(MAINMENU_SCENE_INDEX, false, false);
-   }
-   */
-
-  /*
-  void HandleMouseWheel(float turn) {
-   for (var b : mapButtons)
-   b.boundingBox.y -= turn * 15;
-   }
-   */
-
-  void Load() {
-    /*
-    maps = GetAllMapsFromDatabase();
-     
-     mapButtons = new ArrayList<PictureButton>();
-     
-     float x = 10;
-     float y = 10;
-     float w = 200;
-     float h = 200;
-     for (var m : maps) {
-     PImage pic = m.img;
-     Rectangle rect = new Rectangle(x, y, w, h);
-     PictureButton pb = new PictureButton(
-     pic,
-     m.name,
-     rect,
-     () -> {
-     var gameScene = (GameScene)sceneManager.scenes[GAME_SCENE_INDEX];
-     gameScene.map = m;
-     gameScene.mapDisplay = new MapDisplay();
-     gameScene.SetupPlayerOnCurrentMap();
-     sceneManager.Load(GAME_SCENE_INDEX, false, false);
-     }
-     
-     );
-     mapButtons.add(pb);
-     
-     x += w + 10;
-     if (x+w > width) {
-     x = 10;
-     y += h + 10;
-     }
-     }
-     
-     */
-  }
-  void Unload() {
-  }
-}
-
-
-class MapSelectionLocalScene extends Scene {
   UIContainer buttongroup;
   public void mouseEvent(MouseEvent e) {
     if (e.getAction() != MouseEvent.WHEEL)
@@ -90,12 +16,71 @@ class MapSelectionLocalScene extends Scene {
     background(0);
   }
 
+  void HandleInput() {
 
-  /*
-  void HandleMouseWheel(float turn) {
-   for (var b : mapButtons)
-   b.boundingBox.y -= turn * 15;
-   }*/
+    if (escDown)
+      sceneManager.Load(MAINMENU_SCENE_INDEX, false, false);
+  }
+
+  void Load() {
+    maps = GetAllMapsFromDatabase();
+    buttongroup = new UIContainer();
+    var onlinemapselectionUI = new TLMUI();
+
+    float x = 10;
+    float y = 10;
+    float w = 200;
+    float h = 200;
+    for (var m : maps) {
+      PImage pic = m.img;
+      Rectangle rect = new Rectangle(x, y, w, h);
+      PictureButton pb = new PictureButton(
+        m.name,
+        rect,
+        pic,
+        () -> {
+        var gameScene = (GameScene)sceneManager.scenes[GAME_SCENE_INDEX];
+        gameScene.map = m;
+        gameScene.mapDisplay = new MapDisplay();
+        gameScene.SetupPlayerOnCurrentMap();
+        sceneManager.Load(GAME_SCENE_INDEX, false, false);
+      }
+
+      );
+      buttongroup.AddChild(pb);
+
+      x += w + 10;
+      if (x+w > width) {
+        x = 10;
+        y += h + 10;
+      }
+    }
+    onlinemapselectionUI.AddChild(buttongroup);
+    SetUI(onlinemapselectionUI);
+  }
+  void Unload() {
+  }
+}
+
+
+class MapSelectionLocalScene extends Scene {
+  UIContainer buttongroup;
+  public void mouseEvent(MouseEvent e) {
+    if (e.getAction() != MouseEvent.WHEEL)
+      return;
+    buttongroup.SetPos(buttongroup.PosX(), buttongroup.PosY() - e.getCount() * 15);
+  }
+  public void keyEvent(KeyEvent e) {
+    if (escDown)
+      sceneManager.Load(MAINMENU_SCENE_INDEX, false, false);
+  }
+
+  void Update() {
+  }
+  void Display() {
+    background(0);
+  }
+
 
 
   void Load() {
@@ -140,7 +125,7 @@ class MapSelectionLocalScene extends Scene {
       }
     }
     mapSelectionUI.AddChild(buttongroup);
-    
+
     SetUI(mapSelectionUI);
   }
   void Unload() {
