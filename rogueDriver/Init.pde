@@ -8,7 +8,7 @@ void Init() {
   tileSize = tileSizeNative * scale;
   tileSize_half = tileSize * 0.5;
 
-  sceneManager = new SceneManager(
+  sceneManager = new SceneManager(this,
     new MainMenuScene(),
     new GameScene(),
     new EditorScene(),
