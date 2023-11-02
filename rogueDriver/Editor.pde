@@ -6,17 +6,59 @@ class EditorScene extends Scene {
 
   float xOff, yOff;
 
-  //  ArrayList<PictureButton> materialButtons;
-  
+  ArrayList<MaterialButton> materialButtons;
+
   public void mouseEvent(MouseEvent e) {
+    if (materialButtons!= null) {
+      for (int i = 0; i < materialButtons.size(); i++)
+        if (materialButtons.get(i).extents.IsInside(mouseX, mouseY))
+          return;
+    }
+
+    if (e.getCount() != 0 && e.getAction() == MouseEvent.WHEEL   ) {
+      HandleMouseWheel(e.getCount());
+      return;
+    }
+
+    HandleMousepress();
   }
   public void keyEvent(KeyEvent e) {
+    if (e.getAction() != KeyEvent.PRESS)
+      return;
+
+    var keypressed = e.getKey();
+
+    if (keypressed == '0')
+      brush = 0;
+    if (keypressed == '1')
+      brush = 1;
+    if (keypressed == '2')
+      brush = 2;
+    if (keypressed == '3')
+      brush = 3;
+    if (keypressed == '4')
+      brush = 4;
+    if (keypressed == '5')
+      brush = 5;
+    if (keypressed == '+')
+      brushSize++;
+    if (keypressed == '-')
+      brushSize--;
+    if (brushSize < 1)
+      brushSize = 1;
+
+    if (keypressed == 'u')
+      UploadMap(map);
+
+    if (escDown)
+      sceneManager.Load(MAINMENU_SCENE_INDEX, false, false);
   }
-  
-  
+
+
   void Update() {
   }
   void Display() {
+    background(0);
     if (map == null)
       return;
     noStroke();
@@ -43,23 +85,9 @@ class EditorScene extends Scene {
         }
       }
     }
-/*
-    if (materialButtons == null)
-      return;
-    for (var b : materialButtons)
-      b.Display();
-      */
   }
-  /*
-  void HandleInput() {
-    if (keyPressed)
-      HandleKeypress();
 
-    if (mousePressed)
-      HandleMousepress();
-  }
-  */
-/*
+
   void HandleMouseWheel(float turn) {
     float zoomAmount = -turn;
 
@@ -74,20 +102,10 @@ class EditorScene extends Scene {
     xOff -= editorTileSize*(prevX - newX);
     yOff -= editorTileSize*(prevY - newY);
   }
-*/
 
-/*
+
+
   void HandleMousepress() {
-    if (materialButtons != null)
-      for (var b : materialButtons)
-        if (b.TryClick())
-          return;
-
-    for (var b : materialButtons)
-      if (b.boundingBox.IsPointInside(mouseX, mouseY))
-        return;
-
-
     if (mouseButton == RIGHT) {
       int x = int((mouseX-xOff)/editorTileSize);
       int y = int((mouseY-yOff)/editorTileSize);
@@ -117,73 +135,34 @@ class EditorScene extends Scene {
       }
     }
   }
-  */
-  
-/*
 
-  void HandleKeypress() {
-    if (key == '0')
-      brush = 0;
-    if (key == '1')
-      brush = 1;
-    if (key == '2')
-      brush = 2;
-    if (key == '3')
-      brush = 3;
-    if (key == '4')
-      brush = 4;
-    if (key == '5')
-      brush = 5;
-    if (key == '+')
-      brushSize++;
-    if (key == '-')
-      brushSize--;
-    if (brushSize < 1)
-      brushSize = 1;
-
-    if (key == 'u')
-      UploadMap(map);
-
-    if (escDown)
-      sceneManager.Load(MAINMENU_SCENE_INDEX, false, false);
-  }
-
-*/
   void Load() {
-    /*
-    if (materialButtons != null)
-      return;
-*/
-/*
-    materialButtons = new ArrayList<PictureButton>();
+    var editorUI = new TLMUI();
+    materialButtons = new ArrayList<MaterialButton>();
+
     for (int i = 0; i < mapColors.length; i++) {
-      String name = materialNames[i];
-      color col = mapColors[i];
       int mat = i;
-      PGraphics img = createGraphics((int)tileSize*2, (int)tileSize*2);
-      img.beginDraw();
-      img.background(col);
-      img.endDraw();
-      
+
       float w = tileSize*2;
       float h = tileSize*2;
-      
-      float x = 10 + w*i;
+
+      float x = 10 + (w+5)*i;
       float y = 10;
 
       Rectangle rect = new Rectangle(x, y, w, h);
 
-      var pb = new PictureButton(
-        img,
-        name,
+      var pb = new MaterialButton(
+        materialNames[i],
+        i,
         rect,
         () -> {
-        ((EditorScene)sceneManager.scenes[EDITOR_SCENE_INDEX]).brush = mat;
+        brush = mat;
       }
       );
+      editorUI.AddChild(pb);
       materialButtons.add(pb);
     }
-    */
+    SetUI(editorUI);
   }
   void Unload() {
   }
@@ -200,5 +179,38 @@ class EditorScene extends Scene {
 
   void LoadMapFromTileData(int[][] tileData) {
     this.map = new Map(tileData);
+  }
+}
+
+class MaterialButton extends Button {
+  int material = -1;
+
+  public MaterialButton(String label, int material, Rectangle extents, Runnable function) {
+    super(label, extents, function);
+    this.material = material;
+  }
+
+  public void DisplaySelf(float x, float y) {
+    if (extents == null)
+      return;
+
+    var theme = (GetRoot()).theme;
+
+    Boolean mouseInside = false;
+    float xOff = 0;
+    float yOff = 0;
+    if (GetParent() != null) {
+      xOff = GetParent().PosX();
+      yOff = GetParent().PosY();
+    }
+    if (extents.IsInside(mouseX - xOff, mouseY - yOff))
+      mouseInside = true;
+
+    stroke(mouseInside ? color(255, 0, 255) : theme.buttonOutlineColor);
+    fill(mapColors[material]);
+    rect(x, y, extents.w, extents.h);
+    textAlign(CENTER, CENTER);
+    fill(theme.buttonLabelColor);
+    text(label, x + extents.w/2, y + extents.h/2);
   }
 }

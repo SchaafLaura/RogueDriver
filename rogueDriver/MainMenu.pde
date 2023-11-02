@@ -1,13 +1,6 @@
 class MainMenuScene extends Scene {
   PImage bg;
 
-  //Button[] buttons;
-
-  public void mouseEvent(MouseEvent e) {
-  }
-  public void keyEvent(KeyEvent e) {
-  }
-
   MainMenuScene() {
     bg = loadImage("bg_mainmenu.png");
     bg.resize(width, height);
@@ -58,6 +51,10 @@ class MainMenuScene extends Scene {
     this.SetUI(mainMenuUI);
   }
 
+  public void mouseEvent(MouseEvent e) {
+  }
+  public void keyEvent(KeyEvent e) {
+  }
   void Update() {
   }
   void Display() {

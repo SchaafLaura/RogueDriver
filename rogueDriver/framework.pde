@@ -1,5 +1,5 @@
 class Button extends UIElement implements IMouseInteractable {
-  private Rectangle extents;
+  protected Rectangle extents;
   Runnable function;
 
   public Button(String label, Rectangle extents, Runnable function) {
@@ -10,6 +10,7 @@ class Button extends UIElement implements IMouseInteractable {
   }
 
   Boolean OnMouseEvent(MouseEvent e) {
+
     if (!(/*e.getAction() == MouseEvent.CLICK || */e.getAction() == MouseEvent.RELEASE))
       return false;
 
@@ -21,6 +22,7 @@ class Button extends UIElement implements IMouseInteractable {
     }
     if (!extents.IsInside(e.getX() - xOff, e.getY() - yOff))
       return false;
+
 
     if (function != null)
       function.run();
@@ -378,6 +380,8 @@ public class SceneManager {
     if (activeScene == -1)
       return;
     scenes[activeScene].mouseEvent(e);
+    if (activeScene == -1)
+      return;
     if (scenes[activeScene].ui != null)
       scenes[activeScene].ui.mouseEvent(e);
   }
@@ -386,6 +390,8 @@ public class SceneManager {
     if (activeScene == -1)
       return;
     scenes[activeScene].keyEvent(e);
+    if (activeScene == -1)
+      return;
     if (scenes[activeScene].ui != null)
       scenes[activeScene].ui.keyEvent(e);
   }
@@ -396,6 +402,8 @@ public class SceneManager {
       return;
     }
     scenes[activeScene].Update();
+    if (activeScene == -1)
+      return;
     if (scenes[activeScene].ui != null)
       scenes[activeScene].ui.Update();
   }
@@ -406,6 +414,8 @@ public class SceneManager {
       return;
     }
     scenes[activeScene].Display();
+    if (activeScene == -1)
+      return;
     if (scenes[activeScene].ui != null)
       scenes[activeScene].ui.Display();
   }
@@ -627,7 +637,6 @@ class UIContainer extends UIElement {
         return true;
     }
 
-
     for (int i = children.size() - 1; i >= 0; i--) {
       var child = children.get(i);
       if (child.GetVisible() && child instanceof IMouseInteractable) {
@@ -639,6 +648,9 @@ class UIContainer extends UIElement {
           }
           return true;
         }
+      } else if (child instanceof UIContainer) {
+        if (((UIContainer)child).OnMouseEvent(e))
+          return true;
       }
     }
 
