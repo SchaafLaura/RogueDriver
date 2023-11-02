@@ -1,26 +1,37 @@
 class MapSelectionOnlineScene extends Scene {
-  ArrayList<PictureButton> mapButtons;
+  //ArrayList<PictureButton> mapButtons;
   ArrayList<Map> maps;
+  
+  public void mouseEvent(MouseEvent e){}
+  public void keyEvent(KeyEvent e){}
+  
   void Update() {
   }
   void Display() {
-    if (mapButtons == null)
+    /*if (mapButtons == null)
       return;
     for (var b : mapButtons)
-      b.Display();
+      b.Display();*/
   }
+  
+  /*
   void HandleInput() {
     for (var b : mapButtons)
       b.TryClick();
     if (escDown)
       sceneManager.Load(MAINMENU_SCENE_INDEX, false, false);
   }
+  */
+  
+  /*
   void HandleMouseWheel(float turn) {
     for (var b : mapButtons)
       b.boundingBox.y -= turn * 15;
   }
+  */
+  
   void Load() {
-
+/*
     maps = GetAllMapsFromDatabase();
 
     mapButtons = new ArrayList<PictureButton>();
@@ -53,6 +64,8 @@ class MapSelectionOnlineScene extends Scene {
         y += h + 10;
       }
     }
+    
+    */
   }
   void Unload() {
   }
@@ -60,26 +73,36 @@ class MapSelectionOnlineScene extends Scene {
 
 
 class MapSelectionLocalScene extends Scene {
-  ArrayList<PictureButton> mapButtons;
+  //ArrayList<PictureButton> mapButtons;
+  public void mouseEvent(MouseEvent e){}
+  public void keyEvent(KeyEvent e){}
+  
   void Update() {
   }
   void Display() {
-    if (mapButtons == null)
+    /*if (mapButtons == null)
       return;
     for (var b : mapButtons)
-      b.Display();
+      b.Display();*/
   }
+  
+  /*
   void HandleInput() {
     for (var b : mapButtons)
       b.TryClick();
     if (escDown)
       sceneManager.Load(MAINMENU_SCENE_INDEX, false, false);
-  }
+  }*/
+  
+  /*
   void HandleMouseWheel(float turn) {
     for (var b : mapButtons)
       b.boundingBox.y -= turn * 15;
-  }
+  }*/
+  
+  
   void Load() {
+    /*
     String pathToTracks = dataPath("../tracks");
     File folder = new File(pathToTracks);
     FilenameFilter fF = new FilenameFilter() {
@@ -116,6 +139,7 @@ class MapSelectionLocalScene extends Scene {
         y += h + 10;
       }
     }
+    */
   }
   void Unload() {
   }

@@ -1,12 +1,12 @@
 class MainMenuScene extends Scene {
-  /* Button levelSelectLocal;
-   Button editor;
-   Button quit;*/
-
   PImage bg;
 
   Button[] buttons;
 
+  public void mouseEvent(MouseEvent e) {
+  }
+  public void keyEvent(KeyEvent e) {
+  }
 
   MainMenuScene() {
     bg = loadImage("bg_mainmenu.png");
@@ -70,15 +70,20 @@ class MainMenuScene extends Scene {
     for (var b : buttons)
       b.Display();
   }
+
+  /*
   void HandleInput() {
-    for (var b : buttons)
-      b.TryClick();
-  }
+   for (var b : buttons)
+   b.TryClick();
+   }
+   */
+
   void Load() {
   }
   void Unload() {
   }
-
+  /*
   void HandleMouseWheel(float turn) {
-  }
+   }
+   */
 }

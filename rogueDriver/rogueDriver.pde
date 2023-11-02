@@ -14,21 +14,17 @@ void setup() {
   Init();
 }
 
-float zoomLevel = 1.0;
-
 void draw() {
   background(0);
 
   sceneManager.Update();
-
   sceneManager.Display();
-
-  if (mousePressed)
-    sceneManager.HandleInput();
 
   fill(255, 0, 0);
   text(frameRate, width-100, 100);
 }
+
+float zoomLevel = 1.0;
 
 int wall = 0;
 int road = 1;
@@ -50,7 +46,7 @@ String[] materialNames = new String[]{
   "wall",
   "road",
   "sand",
-  "ice", 
+  "ice",
   "start",
   "finish"
 };
