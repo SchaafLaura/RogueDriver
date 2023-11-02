@@ -1,7 +1,7 @@
 class MainMenuScene extends Scene {
   PImage bg;
 
-  Button[] buttons;
+  //Button[] buttons;
 
   public void mouseEvent(MouseEvent e) {
   }
@@ -11,7 +11,7 @@ class MainMenuScene extends Scene {
   MainMenuScene() {
     bg = loadImage("bg_mainmenu.png");
     bg.resize(width, height);
-    buttons = new Button[4];
+    var mainMenuUI = new TLMUI();
 
     Button levelSelectOnline = new Button(
       "Online Levels",
@@ -21,7 +21,6 @@ class MainMenuScene extends Scene {
       sceneManager.Load(MAPSELECTIONONLINE_SCENE_INDEX, false, true);
       loop();
     }
-
     );
 
     Button levelSelectLocal = new Button(
@@ -29,16 +28,10 @@ class MainMenuScene extends Scene {
       new Rectangle(width/2-100, height/2 + 100, 200, 50),
       () -> {  // switch Scene to LevelSelect
       noLoop();
-      /*selectInput("Select a track to edit:", "LoadTrackToLevelAndSwitchScene");
-       if (gameManager.GetMap() == null)
-       return;
-       sceneManager.SwitchSceneTo(GAME_SCENE_INDEX, false, true);*/
-
       sceneManager.Load(MAPSELECTIONLOCAL_SCENE_INDEX, false, true);
       loop();
     }
     );
-
 
     Button editor = new Button(
       "Editor",
@@ -57,33 +50,21 @@ class MainMenuScene extends Scene {
     }
     );
 
-    buttons[0] = levelSelectOnline;
-    buttons[1] = levelSelectLocal;
-    buttons[2] = editor;
-    buttons[3] = quit;
+    mainMenuUI.AddChild(levelSelectOnline);
+    mainMenuUI.AddChild(levelSelectLocal);
+    mainMenuUI.AddChild(editor);
+    mainMenuUI.AddChild(quit);
+
+    this.SetUI(mainMenuUI);
   }
 
   void Update() {
   }
   void Display() {
     image(bg, 0, 0);
-    for (var b : buttons)
-      b.Display();
   }
-
-  /*
-  void HandleInput() {
-   for (var b : buttons)
-   b.TryClick();
-   }
-   */
-
   void Load() {
   }
   void Unload() {
   }
-  /*
-  void HandleMouseWheel(float turn) {
-   }
-   */
 }

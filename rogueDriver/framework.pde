@@ -68,13 +68,8 @@ class Checkbox extends UIElement implements IMouseInteractable {
   }
 
   Boolean OnMouseEvent(MouseEvent e) {
-    /*if (e.getAction() != MouseEvent.CLICK)
-     return false;*/
-
     if (e.getAction() != MouseEvent.RELEASE)
       return false;
-
-
 
     float xOff = 0;
     float yOff = 0;
@@ -167,10 +162,6 @@ class Dropdown<T> extends UIElement implements IMouseInteractable {
       dropped = false;
       return true;
     }
-
-
-
-
     return false;
   }
 
@@ -730,6 +721,8 @@ abstract class UIElement implements IUpdateable, IDisplayable {
 
   final public UIContainer GetRoot() {
     var p = this.parent;
+
+
     while (p.parent != null)
       p = p.parent;
     return (UIContainer) p;

@@ -11,11 +11,12 @@ import java.io.*;
 void setup() {
   fullScreen();
   smooth(0);
+  background(0);
   Init();
 }
 
 void draw() {
-  background(0);
+  //background(0);
 
   sceneManager.Update();
   sceneManager.Display();
