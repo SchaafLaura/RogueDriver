@@ -277,7 +277,7 @@ class InputField extends UIElement implements ICapturesKeyboardOnClick {
   }
 
   public void UpdateSelf() {
-    if ((!GetVisible() || !GetParent().GetVisible()) &&
+    if ((!GetVisible() || (!GetParent().GetVisible() && GetParent().GetParent() != null)) &&
       GetRoot().keyboardCapturingElement != null &&
       GetRoot().keyboardCapturingElement == this) {
       UnCapture();
@@ -649,8 +649,9 @@ class UIContainer extends UIElement {
           return true;
         }
       } else if (child instanceof UIContainer) {
-        if (((UIContainer)child).OnMouseEvent(e))
+        if (((UIContainer)child).OnMouseEvent(e)) {
           return true;
+        }
       }
     }
 

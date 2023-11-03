@@ -1,58 +1,63 @@
 class HighscoreScene extends Scene {
-  String playerName = "";
   int playerScore = -1;
   String playerReplay;
   boolean writtenToDatabase = false;
 
   ArrayList<HighscoreEntry> highscores;
-  //ArrayList<Button> driveAgainstButtons;
+  UIContainer buttongroup;
+  InputField nameInput;
+  Button uploadButton;
 
 
   public void mouseEvent(MouseEvent e) {
   }
   public void keyEvent(KeyEvent e) {
+    if (e.getAction() != KeyEvent.PRESS)
+      return;
+
+    if (keyCode == ENTER && nameInput.value.length() > 0 && !writtenToDatabase) {
+      WriteHighScoreToDB(nameInput.value, playerReplay, ((GameScene)sceneManager.scenes[GAME_SCENE_INDEX]).map.Hash());
+      highscores = GetHighScoresFromDB(((GameScene)sceneManager.scenes[GAME_SCENE_INDEX]).map.Hash());
+      Collections.sort(highscores);
+      Collections.reverse(highscores);
+      MakeDriveAgainstButtons();
+      writtenToDatabase = true;
+      nameInput.SetVisible(false);
+      uploadButton.SetVisible(false);
+    }
+
+    if (escDown && nameInput.value != "" && highscores != null) {
+      nameInput.value = "";
+      playerScore = -1;
+      highscores = null;
+      sceneManager.Load(MAINMENU_SCENE_INDEX, false, false);
+      writtenToDatabase = false;
+      return;
+    }
   }
 
   void Display() {
     background(0);
-    if (highscores == null)
-      DisplayNameInput();
-    else
+    if (highscores != null)
       DisplayHighScores();
   }
 
   void DisplayHighScores() {
     int i = 0;
     for (var h : highscores) {
-     //      driveAgainstButtons.get(i).Display();
       textAlign(LEFT, CENTER);
       text(h.score + " - " + h.name, width/3, (i+1) * 50);
-
       i++;
     }
-  }
-
-  void DisplayNameInput() {
-    background(0);
-    textSize(30);
-    fill(0, 255, 0);
-    textAlign(CENTER, CENTER);
-    text("SCORE: " + playerScore, width/2, height/2 - 30);
-
-    textAlign(LEFT, CENTER);
-    text("Sign your name:", width/2 - 100, height/2 + 30);
-
-    boolean cursorActive = frameCount % 20 < 10;
-    String cursor = cursorActive ? "|" : "";
-    text(playerName+cursor, width/2 - 100, height/2 + 90);
   }
 
 
   void Update() {
     if (playerScore != -1)
       return;
-    else
+    else {
       GetPlayerHighScoreAndReplay();
+    }
   }
 
   void GetPlayerHighScoreAndReplay() {
@@ -61,17 +66,18 @@ class HighscoreScene extends Scene {
   }
 
   void MakeDriveAgainstButtons() {
-    /*
-    driveAgainstButtons = new ArrayList<Button>();
+
+    buttongroup = new UIContainer();
+
     for (int i = 0; i < highscores.size(); i++) {
       String replayToPlayAgainst = highscores.get(i).replay;
       Button b = new Button("Match", new Rectangle(width/3 + 300, (i) * 50 + 25, 100, 40), ()-> {
         MatchAgainst(replayToPlayAgainst);
       }
       );
-      driveAgainstButtons.add(b);
+      buttongroup.AddChild(b);
     }
-    */
+    ui.AddChild(buttongroup);
   }
 
   void MatchAgainst(String matchReplay) {
@@ -85,59 +91,48 @@ class HighscoreScene extends Scene {
     ((GameScene)sceneManager.scenes[GAME_SCENE_INDEX]).SetupMatchAgainst(replays);
     sceneManager.Load(GAME_SCENE_INDEX, false, false);
 
-    playerName = "";
+    nameInput.value = "";
     playerScore = -1;
     playerReplay = "";
     highscores = null;
-    //     driveAgainstButtons = null;
+    ui.root.RemoveChild(buttongroup);
+    buttongroup = null;
     writtenToDatabase = false;
   }
 
-/*
-  void HandleInput() {
-    
-    if (driveAgainstButtons != null)
-      for (var b : driveAgainstButtons)
-        b.TryClick();
+
+
+  void Load() {
+    var highscoreUI = new TLMUI();
+    nameInput = new InputField(
+      "yourNameHere",
+      "abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789ß-_#+~*?()%$§!@€µ<>|²³{[]}",
+      new Rectangle(width/2-150, height/2, 300, 60));
 
 
 
-    if (keyCode == ENTER && playerName.length() > 0 && !writtenToDatabase) {
-      WriteHighScoreToDB(playerName, playerReplay, ((GameScene)sceneManager.scenes[GAME_SCENE_INDEX]).map.Hash());
+    uploadButton = new Button(
+      "Upload Highscore",
+      new Rectangle(width/2-150, height/2+100, 300, 60),
+      ()-> {
+      WriteHighScoreToDB(nameInput.value, playerReplay, ((GameScene)sceneManager.scenes[GAME_SCENE_INDEX]).map.Hash());
       highscores = GetHighScoresFromDB(((GameScene)sceneManager.scenes[GAME_SCENE_INDEX]).map.Hash());
       Collections.sort(highscores);
       Collections.reverse(highscores);
       MakeDriveAgainstButtons();
       writtenToDatabase = true;
+      nameInput.SetVisible(false);
+      uploadButton.SetVisible(false);
     }
+    );
 
-    if ((keyCode == BACKSPACE && playerName.length() == 1) || (keyCode == BACKSPACE && playerName.length() == 0)) {
-      playerName = "";
-    } else if (keyCode == BACKSPACE && playerName.length() > 0) {
-      playerName = playerName.substring(0, playerName.length() - 1);
-    } else if (keyPressed && ((key <= 'z' && key >= 'A'))) {
-      playerName += (char)key;
-    }
 
-    if (escDown && playerName != "" && highscores != null) {
-      playerName = "";
-      playerScore = -1;
-      highscores = null;
-      sceneManager.Load(MAINMENU_SCENE_INDEX, false, false);
-      writtenToDatabase = false;
-      return;
-    }
-  }
-  */
-
-  void Load() {
+    highscoreUI.AddChild(nameInput);
+    highscoreUI.AddChild(uploadButton);
+    SetUI(highscoreUI);
   }
   void Unload() {
   }
-  /*
-  void HandleMouseWheel(float turn) {
-  }
-  */
 }
 
 

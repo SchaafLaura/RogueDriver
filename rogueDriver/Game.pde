@@ -9,7 +9,7 @@ class GameScene extends Scene {
   public void mouseEvent(MouseEvent e) {
   }
   public void keyEvent(KeyEvent e) {
-    if (e.getAction() != KeyEvent.RELEASE)
+    if (e.getAction() != KeyEvent.PRESS)
       return;
     TryGoToMainMenu();
     TryReset();
@@ -35,7 +35,7 @@ class GameScene extends Scene {
   void Update() {
     if (map.tiles[player.x][player.y] == finish) {
       win = true;
-      sceneManager.Load(HIGHSCORE_SCENE_INDEX, false, false);
+      sceneManager.Load(HIGHSCORE_SCENE_INDEX, false, true);
     }
     player.Update();
     for (var g : ghosts)
