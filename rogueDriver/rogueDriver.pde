@@ -12,6 +12,7 @@ void setup() {
   fullScreen();
   smooth(0);
   background(0);
+  textSize(30);
   Init();
 }
 

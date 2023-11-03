@@ -5,9 +5,11 @@ class MapSelectionOnlineScene extends Scene {
   public void mouseEvent(MouseEvent e) {
     if (e.getAction() != MouseEvent.WHEEL)
       return;
-    buttongroup.SetPos(buttongroup.PosX(), buttongroup.PosY() - e.getCount() * 15);
+    buttongroup.SetPos(buttongroup.PosX(), min(buttongroup.PosY() - e.getCount() * 15, 0));
   }
   public void keyEvent(KeyEvent e) {
+    if (escDown)
+      sceneManager.Load(MAINMENU_SCENE_INDEX, false, false);
   }
 
   void Update() {
@@ -17,9 +19,6 @@ class MapSelectionOnlineScene extends Scene {
   }
 
   void HandleInput() {
-
-    if (escDown)
-      sceneManager.Load(MAINMENU_SCENE_INDEX, false, false);
   }
 
   void Load() {
@@ -68,7 +67,7 @@ class MapSelectionLocalScene extends Scene {
   public void mouseEvent(MouseEvent e) {
     if (e.getAction() != MouseEvent.WHEEL)
       return;
-    buttongroup.SetPos(buttongroup.PosX(), buttongroup.PosY() - e.getCount() * 15);
+    buttongroup.SetPos(buttongroup.PosX(), min(buttongroup.PosY() - e.getCount() * 15, 0));
   }
   public void keyEvent(KeyEvent e) {
     if (escDown)
@@ -96,7 +95,6 @@ class MapSelectionLocalScene extends Scene {
       }
     };
     String[] filenames = folder.list(fF);
-    //mapButtons = new ArrayList<PictureButton>();
 
     float x = 10;
     float y = 10;

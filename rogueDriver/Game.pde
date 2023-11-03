@@ -5,10 +5,31 @@ class GameScene extends Scene {
   ArrayList<Ghost> ghosts = new ArrayList<Ghost>();
   int dvx, dvy;
   boolean win = false;
-  
+
   public void mouseEvent(MouseEvent e) {
   }
   public void keyEvent(KeyEvent e) {
+    if (e.getAction() != KeyEvent.RELEASE)
+      return;
+    TryGoToMainMenu();
+    TryReset();
+
+    if (player.IsDriving())
+      return;
+
+    for (var g : ghosts)
+      if (g.IsDriving())
+        return;
+
+    TrySteer();
+    Move move = gameManager.GetMoveFromCurrentKey(player, dvx, dvy);
+    if (move != null) {
+      player.DoMove(move);
+      for (var g : ghosts)
+        g.NextStep();
+      dvx = 0;
+      dvy = 0;
+    }
   }
 
   void Update() {
@@ -89,33 +110,6 @@ class GameScene extends Scene {
   }
 
 
-
-  void HandleInput() {
-    TryGoToMainMenu();
-    TryReset();
-
-    if (mousePressed)
-      return;
-
-    if (player.IsDriving())
-      return;
-
-    for (var g : ghosts)
-      if (g.IsDriving())
-        return;
-
-    TrySteer();
-    Move move = gameManager.GetMoveFromCurrentKey(player, dvx, dvy);
-    if (move != null) {
-      player.DoMove(move);
-      for (var g : ghosts)
-        g.NextStep();
-      dvx = 0;
-      dvy = 0;
-    }
-  }
-
-
   void TrySteer() {
     int prevDVX = dvx;
     int prevDVY = dvy;
@@ -162,13 +156,15 @@ class GameScene extends Scene {
   void Unload() {
   }
 
+  /*
   void HandleMouseWheel(float turn) {
-    zoomLevel *= turn > 0 ? 1.1 : 0.9;
-    scale = zoomLevel * float(width) / resXNative;
-    tileSize = tileSizeNative * scale;
-    tileSize_half = tileSize * 0.5;
-    mapDisplay = new MapDisplay();
-  }
+   zoomLevel *= turn > 0 ? 1.1 : 0.9;
+   scale = zoomLevel * float(width) / resXNative;
+   tileSize = tileSizeNative * scale;
+   tileSize_half = tileSize * 0.5;
+   mapDisplay = new MapDisplay();
+   }
+   */
 
   void LoadMapFromTileData(int[][] tileData) {
     this.map = new Map(tileData);
