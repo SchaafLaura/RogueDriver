@@ -229,6 +229,7 @@ class InputField extends UIElement implements ICapturesKeyboardOnClick {
   private String value;
   private String allowedCharacters = "abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789ß-.,;:_#+~*?=()/&%$§!@€µ<>|²³{[]}\\";
   private Boolean captured = false;
+  private int maximumCharacters = Integer.MAX_VALUE;
 
   public InputField(String defaultValue, String allowedCharacters, Rectangle extents) {
     this.extents = extents;
@@ -240,6 +241,10 @@ class InputField extends UIElement implements ICapturesKeyboardOnClick {
 
   public void SetCaptured(Boolean val) {
     captured = val;
+  }
+
+  public Boolean GetCaptured() {
+    return captured;
   }
 
   public Boolean OnMouseEvent(MouseEvent e) {
@@ -272,7 +277,10 @@ class InputField extends UIElement implements ICapturesKeyboardOnClick {
 
     if (allowedCharacters.indexOf(e.getKey()) == -1)
       return false;
-    value += e.getKey();
+
+    if (value.length() < maximumCharacters)
+      value += e.getKey();
+
     return true;
   }
 
@@ -303,6 +311,10 @@ class InputField extends UIElement implements ICapturesKeyboardOnClick {
     if (frameCount % 30 < 15)
       blinkingLine = "";
     text(value + blinkingLine, x + 5, y + extents.h/2);
+  }
+
+  public void SetMaximumCharacters(int numberOfMaximumCharacters) {
+    maximumCharacters = numberOfMaximumCharacters;
   }
 }
 
@@ -512,8 +524,11 @@ class Slider extends UIElement implements IMouseInteractable {
   }
 
   public void UpdateSelf() {
+    value = constrain(value, valueMin, valueMax);
     float x = map(value, valueMin, valueMax, extents.x, extents.x + extents.w);
     float y = extents.y;
+
+
 
     handleExtents.x = x;
     handleExtents.y = y;
@@ -703,8 +718,11 @@ abstract class UIElement implements IUpdateable, IDisplayable {
       DisplaySelf(PosX(), PosY());
     if (!HasChildren() || GetSuppressChildren())
       return;
-    for (var child : GetChildren())
+    for (var child : GetChildren()){
+      push();
       child.Display();
+      pop();
+    }
   }
 
 

@@ -13,8 +13,6 @@ void keyPressed() {
   if (sceneManager.activeScene == EDITOR_SCENE_INDEX && key == 'l')
     selectInput("Select a track to edit:", "LoadTrackToEditorAndSwitchScene");
   */
-
-  //sceneManager.HandleInput();
 }
 
 void keyReleased() {
@@ -23,16 +21,3 @@ void keyReleased() {
     escDown = false;
   }
 }
-
-/*
-void mousePressed() {
-  //sceneManager.HandleInput();
-}
-*/
-
-/*
-void mouseWheel(MouseEvent event) {
-  float e = event.getCount();
-  sceneManager.HandleMouseWheel(e);
-}
-*/

@@ -7,6 +7,8 @@ class EditorScene extends Scene {
   float xOff, yOff;
 
   ArrayList<MaterialButton> materialButtons;
+  Slider brushSizeSlider;
+  InputField nameInput;
 
   public void mouseEvent(MouseEvent e) {
     if (materialButtons!= null) {
@@ -14,6 +16,12 @@ class EditorScene extends Scene {
         if (materialButtons.get(i).extents.IsInside(mouseX, mouseY))
           return;
     }
+
+    if (nameInput.extents.IsInside(mouseX, mouseY))
+      return;
+
+    if (brushSizeSlider.extents.IsInside(mouseX, mouseY) || brushSizeSlider.handleExtents.IsInside(mouseX, mouseY))
+      return;
 
     if (e.getCount() != 0 && e.getAction() == MouseEvent.WHEEL   ) {
       HandleMouseWheel(e.getCount());
@@ -24,6 +32,9 @@ class EditorScene extends Scene {
   }
   public void keyEvent(KeyEvent e) {
     if (e.getAction() != KeyEvent.PRESS)
+      return;
+
+    if (nameInput.GetCaptured())
       return;
 
     var keypressed = e.getKey();
@@ -41,9 +52,9 @@ class EditorScene extends Scene {
     if (keypressed == '5')
       brush = 5;
     if (keypressed == '+')
-      brushSize++;
+      brushSizeSlider.value++;
     if (keypressed == '-')
-      brushSize--;
+      brushSizeSlider.value--;
     if (brushSize < 1)
       brushSize = 1;
 
@@ -56,6 +67,7 @@ class EditorScene extends Scene {
 
 
   void Update() {
+    brushSize = (int) brushSizeSlider.value;
   }
   void Display() {
     background(0);
@@ -87,7 +99,6 @@ class EditorScene extends Scene {
     }
   }
 
-
   void HandleMouseWheel(float turn) {
     float zoomAmount = -turn;
 
@@ -102,8 +113,6 @@ class EditorScene extends Scene {
     xOff -= editorTileSize*(prevX - newX);
     yOff -= editorTileSize*(prevY - newY);
   }
-
-
 
   void HandleMousepress() {
     if (mouseButton == RIGHT) {
@@ -146,8 +155,8 @@ class EditorScene extends Scene {
       float w = tileSize*2;
       float h = tileSize*2;
 
-      float x = 10 + (w+5)*i;
-      float y = 10;
+      float x = 10;
+      float y = 10 + (w+5)*i;
 
       Rectangle rect = new Rectangle(x, y, w, h);
 
@@ -162,7 +171,35 @@ class EditorScene extends Scene {
       editorUI.AddChild(pb);
       materialButtons.add(pb);
     }
+
+    brushSizeSlider = new Slider(
+      new Rectangle(10 + tileSize*2 + 30, 10, 200, 30),
+      1,
+      64,
+      2);
+
+    editorUI.AddChild(brushSizeSlider);
+
+    nameInput = new InputField(
+      "",
+      "abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789ß-_#+~*?()%$§!@€µ<>|²³{[]}",
+      new Rectangle(width/2 - 150, 5, 300, 40));
+    nameInput.SetMaximumCharacters(16);
+
+
+    editorUI.AddChild(nameInput);
+
+
+
     SetUI(editorUI);
+
+
+    brushSize = 2;
+    brush = 1;
+    editorTileSize = 10;
+
+    xOff = width/4;
+    yOff = 50;
   }
   void Unload() {
   }
@@ -206,7 +243,12 @@ class MaterialButton extends Button {
     if (extents.IsInside(mouseX - xOff, mouseY - yOff))
       mouseInside = true;
 
-    stroke(mouseInside ? color(255, 0, 255) : theme.buttonOutlineColor);
+    boolean selected = false;
+    if (((EditorScene)sceneManager.scenes[EDITOR_SCENE_INDEX]).brush == this.material)
+      selected = true;
+
+    strokeWeight((mouseInside||selected) ? 5 : 1);
+    stroke((mouseInside||selected) ? color(255, 0, 255) : theme.buttonOutlineColor);
     fill(mapColors[material]);
     rect(x, y, extents.w, extents.h);
     textAlign(CENTER, CENTER);
